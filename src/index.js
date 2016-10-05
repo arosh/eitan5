@@ -1,17 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import App from './App';
-// import './index.css';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import RaisedButton from 'material-ui/RaisedButton';
+import getMuiTheme from "material-ui/styles/getMuiTheme";
+import * as colors from "material-ui/styles/colors";
+import MyAwesomeReactComponent from "./MyAwesomeReactComponent";
 
 injectTapEventPlugin();
 
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: colors.indigo500,
+    accent1Color: colors.redA700,
+  },
+});
+
 const App = () => (
-  <MuiThemeProvider>
-    <RaisedButton label="Default" />
+  <MuiThemeProvider muiTheme={muiTheme}>
+    <MyAwesomeReactComponent />
   </MuiThemeProvider>
 );
 
