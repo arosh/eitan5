@@ -5,8 +5,8 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import * as colors from "material-ui/styles/colors";
-import MyAwesomeReactComponent from "./MyAwesomeReactComponent";
-import Editor from "./Editor";
+// import MyAwesomeReactComponent from "./MyAwesomeReactComponent";
+import WordEditor from "./WordEditor";
 
 injectTapEventPlugin();
 
@@ -20,7 +20,7 @@ const muiTheme = getMuiTheme({
 const App = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
     <div className="container">
-      <Editor />
+      <WordEditor />
     </div>
   </MuiThemeProvider>
 );
