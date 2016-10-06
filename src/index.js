@@ -6,8 +6,10 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import * as colors from "material-ui/styles/colors";
 // import MyAwesomeReactComponent from "./MyAwesomeReactComponent";
+import AppBar from "./AppBar";
 import WordEditor from "./WordEditor";
-import WordTable from "./WordTable"
+import WordTable from "./WordTable";
+import Drawer from "./Drawer";
 
 injectTapEventPlugin();
 
@@ -26,9 +28,13 @@ const padding = {
 
 const App = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
-    <div className="container" style={padding}>
+    <div>
+      <AppBar/>
+      <div className="container" style={padding}>
         <WordEditor />
         <WordTable/>
+        <Drawer/>
+      </div>
     </div>
   </MuiThemeProvider>
 );
