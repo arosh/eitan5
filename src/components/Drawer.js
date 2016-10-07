@@ -1,6 +1,8 @@
 import React from 'react';
-import DrawerUI from 'material-ui/Drawer';
+import MDrawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
+import IconHome from 'material-ui/svg-icons/action/home';
+import Divider from 'material-ui/Divider';
 import store from "../Store";
 import UPDATE_DRAWER_OPEN from "../EventTypes";
 
@@ -14,10 +16,12 @@ export default class Drawer extends React.Component {
 
     render() {
         return (
-            <DrawerUI open={this.state.open} docked={false} onRequestChange={ this.onRequestChange.bind(this) }>
+            <MDrawer open={this.state.open} docked={false} onRequestChange={ this.onRequestChange.bind(this) }>
+                <MenuItem leftIcon={<IconHome/>}>Home</MenuItem>
+                <Divider/>
                 <MenuItem>Menu Item</MenuItem>
                 <MenuItem>Menu Item 2</MenuItem>
-            </DrawerUI>
+            </MDrawer>
         );
     }
 
