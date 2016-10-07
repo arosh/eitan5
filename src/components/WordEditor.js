@@ -6,21 +6,21 @@ const WordEditor = () => (
     <div>
         <div className="row middle-xs">
             <div className="col-md-10 col-sm-9 col-xs-12">
-                <TextField floatingLabelText="例文" multiLine={true} fullWidth={true} rows={2}/>
+                <TextField floatingLabelText="例文" multiLine fullWidth rows={2} />
             </div>
             <div className="col-md-2 col-sm-3 center-sm col-xs-12 end-xs">
-                <RaisedButton label="選択範囲をコピー"/>
+                <RaisedButton label="選択範囲をコピー" />
             </div>
         </div>
         <div className="row middle-xs">
             <div className="col-md-5 col-sm-4 col-xs-12">
-                <TextField floatingLabelText="単語" fullWidth={true}/>
+                <TextField floatingLabelText="単語" fullWidth />
             </div>
             <div className="col-md-5 col-sm-5 col-xs-12">
-                <TextField floatingLabelText="答え" fullWidth={true}/>
+                <TextField floatingLabelText="答え" fullWidth />
             </div>
             <div className="col-md-2 col-sm-3 center-sm col-xs-12 end-xs">
-                <RaisedButton label="追加" primary={true}/>
+                <RaisedButton label="追加" primary />
             </div>
         </div>
     </div>

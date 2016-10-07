@@ -3,15 +3,15 @@ import ReactDOM from 'react-dom';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from "material-ui/styles/getMuiTheme";
-import * as colors from "material-ui/styles/colors";
-import AppBar from "./components/AppBar";
-import WordEditor from "./components/WordEditor";
-import WordTable from "./components/WordTable";
-import Drawer from "./components/Drawer";
-import SourceCard from "./components/SourceCard";
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import * as colors from 'material-ui/styles/colors';
+import AppBar from './components/AppBar';
+import WordEditor from './components/WordEditor';
+import WordTable from './components/WordTable';
+import Drawer from './components/Drawer';
+import SourceCard from './components/SourceCard';
 // import Home from "./components/Home";
-import BookAddDialog from "./components/BookAddDialog";
+import BookAddDialog from './components/BookAddDialog';
 
 injectTapEventPlugin();
 
@@ -24,26 +24,26 @@ const muiTheme = getMuiTheme({
 });
 
 const App = () => (
-  <MuiThemeProvider muiTheme={muiTheme}>
-    <div>
-      <AppBar/>
-      <Drawer/>
-      <BookAddDialog/>
-      <div className="container container-fluid">
-        {/*
-        <Home/>
-        */}
-        <SourceCard title="文献のタイトル">
-          著者名，URLなど
-        </SourceCard>
-        <WordEditor/>
-        <WordTable/>
-      </div>
-    </div>
-  </MuiThemeProvider>
+    <MuiThemeProvider muiTheme={muiTheme}>
+        <div>
+            <AppBar />
+            <Drawer />
+            <BookAddDialog />
+            <div className="container container-fluid">
+                {/*
+                <Home/>
+                */}
+                <SourceCard title="文献のタイトル">
+                    著者名，URLなど
+                </SourceCard>
+                <WordEditor />
+                <WordTable />
+            </div>
+        </div>
+    </MuiThemeProvider>
 );
 
 ReactDOM.render(
-  <App />,
-  document.getElementById('root')
+    <App />,
+    document.getElementById('root')
 );

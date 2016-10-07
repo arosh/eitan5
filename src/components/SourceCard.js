@@ -1,9 +1,9 @@
 import React from 'react';
-import {Card, CardTitle, CardText} from 'material-ui/Card';
+import { Card, CardTitle, CardText } from 'material-ui/Card';
 
-const SourceCard = (props) => (
+const SourceCard = props => (
     <Card>
-        <CardTitle title={props.title}/>
+        <CardTitle title={props.title} />
         <CardText>{props.children}</CardText>
     </Card>
 );

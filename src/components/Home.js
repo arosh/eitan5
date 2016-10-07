@@ -1,17 +1,17 @@
 import React from 'react';
-import BookList from "./BookList";
-import WordList from "./WordList";
+import BookList from './BookList';
+import WordList from './WordList';
 
 const Home = () => (
     <div>
         <div className="row">
             <div className="col-xs-12">
-                <BookList/>
+                <BookList />
             </div>
         </div>
         <div className="row margin-top-1rem">
             <div className="col-xs-12">
-                <WordList/>
+                <WordList />
             </div>
         </div>
     </div>
