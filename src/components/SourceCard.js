@@ -1,10 +1,10 @@
 import React from 'react';
-import {Card, CardHeader, CardText} from 'material-ui/Card';
+import {Card, CardTitle, CardText} from 'material-ui/Card';
 
 const SourceCard = (props) => (
     <Card>
-        <CardHeader title={props.title}/>
-        <CardText>{props.children}</CardText>
+        <CardTitle title={props.title}/>
+        <CardText style={{ fontSize: "16px" }}>{props.children}</CardText>
     </Card>
 );
 
