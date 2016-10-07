@@ -11,6 +11,7 @@ import WordEditor from "./components/WordEditor";
 import WordTable from "./components/WordTable";
 import Drawer from "./components/Drawer";
 import SourceCard from "./components/SourceCard";
+import Home from "./components/Home";
 
 injectTapEventPlugin();
 
@@ -26,13 +27,16 @@ const App = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
     <div>
       <AppBar/>
-      <div className="container-fluid">
+      <Drawer/>
+      <div className="container container-fluid">
+        <Home/>
+        {/*
         <SourceCard title="Card title">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.Donec mattis pretium massa.Aliquam erat volutpat.Nulla facilisi.Donec vulputate interdum sollicitudin.Nunc lacinia auctor quam sed pellentesque.Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
         </SourceCard>
         <WordEditor/>
         <WordTable/>
-        <Drawer/>
+        */}
       </div>
     </div>
   </MuiThemeProvider>
