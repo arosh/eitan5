@@ -1,8 +1,8 @@
 import React from 'react';
 import DrawerUI from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
-import store from "./Store";
-import DRAWER_OPEN_UPDATE from "./EventTypes";
+import store from "../Store";
+import DRAWER_OPEN_UPDATE from "../EventTypes";
 
 export default class Drawer extends React.Component {
 

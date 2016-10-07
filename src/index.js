@@ -6,10 +6,10 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import * as colors from "material-ui/styles/colors";
 // import MyAwesomeReactComponent from "./MyAwesomeReactComponent";
-import AppBar from "./AppBar";
-import WordEditor from "./WordEditor";
-import WordTable from "./WordTable";
-import Drawer from "./Drawer";
+import AppBar from "./components/AppBar";
+import WordEditor from "./components/WordEditor";
+import WordTable from "./components/WordTable";
+import Drawer from "./components/Drawer";
 
 injectTapEventPlugin();
 
