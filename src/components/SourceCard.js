@@ -4,7 +4,7 @@ import {Card, CardTitle, CardText} from 'material-ui/Card';
 const SourceCard = (props) => (
     <Card>
         <CardTitle title={props.title}/>
-        <CardText style={{ fontSize: "16px" }}>{props.children}</CardText>
+        <CardText>{props.children}</CardText>
     </Card>
 );
 

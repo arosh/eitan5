@@ -29,14 +29,14 @@ const App = () => (
       <AppBar/>
       <Drawer/>
       <div className="container container-fluid">
-        <Home/>
         {/*
-        <SourceCard title="Card title">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.Donec mattis pretium massa.Aliquam erat volutpat.Nulla facilisi.Donec vulputate interdum sollicitudin.Nunc lacinia auctor quam sed pellentesque.Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+        <Home/>
+        */}
+        <SourceCard title="文献のタイトル">
+          著者名，URLなど
         </SourceCard>
         <WordEditor/>
         <WordTable/>
-        */}
       </div>
     </div>
   </MuiThemeProvider>
