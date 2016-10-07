@@ -5,13 +5,13 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import * as colors from "material-ui/styles/colors";
-// import MyAwesomeReactComponent from "./MyAwesomeReactComponent";
 import AppBar from "./components/AppBar";
 import WordEditor from "./components/WordEditor";
 import WordTable from "./components/WordTable";
 import Drawer from "./components/Drawer";
 import SourceCard from "./components/SourceCard";
-import Home from "./components/Home";
+// import Home from "./components/Home";
+import BookAddDialog from "./components/BookAddDialog";
 
 injectTapEventPlugin();
 
@@ -28,6 +28,7 @@ const App = () => (
     <div>
       <AppBar/>
       <Drawer/>
+      <BookAddDialog/>
       <div className="container container-fluid">
         {/*
         <Home/>

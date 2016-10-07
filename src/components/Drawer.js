@@ -5,7 +5,7 @@ import IconHome from 'material-ui/svg-icons/action/home';
 import IconAddCircle from 'material-ui/svg-icons/content/add-circle';
 import Divider from 'material-ui/Divider';
 import store from "../Store";
-import UPDATE_DRAWER_OPEN from "../EventTypes";
+import {UPDATE_DRAWER_OPEN} from "../EventTypes";
 
 export default class Drawer extends React.Component {
 
@@ -19,7 +19,7 @@ export default class Drawer extends React.Component {
         return (
             <MDrawer open={this.state.open} docked={false} onRequestChange={ this.onRequestChange.bind(this) }>
                 <MenuItem leftIcon={<IconHome/>}>Home</MenuItem>
-                <MenuItem leftIcon={<IconAddCircle/>}>文献追加</MenuItem>
+                <MenuItem leftIcon={<IconAddCircle/>} onTouchTap={ () => store.updateBookAddDialogOpen(true) }>文献追加</MenuItem>
                 <MenuItem leftIcon={<IconAddCircle/>}>単語追加</MenuItem>
                 <Divider/>
                 <MenuItem>文献の名前</MenuItem>
