@@ -2,14 +2,14 @@ import React from 'react';
 import DrawerUI from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import store from "../Store";
-import DRAWER_OPEN_UPDATE from "../EventTypes";
+import UPDATE_DRAWER_OPEN from "../EventTypes";
 
 export default class Drawer extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { open: store.drawerOpen };
-        store.on(DRAWER_OPEN_UPDATE, this.onOpenUpdate.bind(this));
+        this.state = { open: store.isDrawerOpen() };
+        store.on(UPDATE_DRAWER_OPEN, this.onDrawerOpenUpdate.bind(this));
     }
 
     render() {
@@ -25,8 +25,8 @@ export default class Drawer extends React.Component {
         store.updateDrawerOpen(open);
     }
 
-    onOpenUpdate() {
-        const open = store.drawerOpen;
+    onDrawerOpenUpdate() {
+        const open = store.isDrawerOpen();
         this.setState({
             open,
         });

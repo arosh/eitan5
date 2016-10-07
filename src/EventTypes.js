@@ -1,1 +1,1 @@
-export const DRAWER_OPEN_UPDATE = "DRAWER_OPEN_UPDATE";
+export const UPDATE_DRAWER_OPEN = Symbol();

@@ -1,14 +1,17 @@
 import EventEmitter from "eventemitter3";
-import DRAWER_OPEN_UPDATE from "./EventTypes";
+import UPDATE_DRAWER_OPEN from "./EventTypes";
 
 class Store extends EventEmitter {
     constructor() {
         super();
-        this.drawerOpen = false;
+        this._isDrawerOpen = false;
     }
     updateDrawerOpen(open) {
-        this.drawerOpen = open;
-        this.emit(DRAWER_OPEN_UPDATE);
+        this._isDrawerOpen = open;
+        this.emit(UPDATE_DRAWER_OPEN);
+    }
+    isDrawerOpen() {
+        return this._isDrawerOpen;
     }
 }
 
