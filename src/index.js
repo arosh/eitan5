@@ -21,16 +21,11 @@ const muiTheme = getMuiTheme({
   fontFamily: "'Roboto', 'Noto Sans JP', 'sans-serif'",
 });
 
-const padding = {
-  paddingLeft: "15px",
-  paddingRight: "15px",
-}
-
 const App = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
     <div>
       <AppBar/>
-      <div className="container" style={padding}>
+      <div className="container-fluid">
         <WordEditor />
         <WordTable/>
         <Drawer/>
