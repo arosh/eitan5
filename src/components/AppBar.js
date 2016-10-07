@@ -3,7 +3,7 @@ import AppBarUI from 'material-ui/AppBar';
 import store from "../Store";
 
 const AppBar = () => (
-    <AppBarUI title="Eitan5" onLeftIconButtonTouchTap={ () => store.updateDrawerOpen(true) }/>
+    <AppBarUI title="eitan5go" onLeftIconButtonTouchTap={ () => store.updateDrawerOpen(true) }/>
 );
 
 export default AppBar;
