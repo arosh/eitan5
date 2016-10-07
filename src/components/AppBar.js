@@ -1,9 +1,13 @@
 import React from 'react';
-import AppBarUI from 'material-ui/AppBar';
+import MAppBar from 'material-ui/AppBar';
 import store from "../Store";
 
 const AppBar = () => (
-    <AppBarUI title="eitan5go" onLeftIconButtonTouchTap={ () => store.updateDrawerOpen(true) }/>
+    <MAppBar
+        title="eitan5go"
+        onLeftIconButtonTouchTap={ () => store.updateDrawerOpen(true) }
+        className="appbar-fixed-top"
+        />
 );
 
 export default AppBar;
