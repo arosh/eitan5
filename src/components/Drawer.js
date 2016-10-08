@@ -17,22 +17,22 @@ export default class Drawer extends React.Component {
 
   render() {
     return (
-            <MDrawer
-              open={this.state.open}
-              docked={false}
-              onRequestChange={this.onRequestChange.bind(this)}
-            >
-                <MenuItem leftIcon={<IconHome />}>Home</MenuItem>
-                <MenuItem
-                  leftIcon={<IconAddCircle />}
-                  onTouchTap={this.onBookAddClick.bind(this)}
-                >
-                  文献追加
-                </MenuItem>
-                <Divider />
-                <MenuItem>文献の名前</MenuItem>
-            </MDrawer>
-        );
+      <MDrawer
+        open={this.state.open}
+        docked={false}
+        onRequestChange={this.onRequestChange.bind(this)}
+      >
+        <MenuItem leftIcon={<IconHome />}>Home</MenuItem>
+        <MenuItem
+          leftIcon={<IconAddCircle />}
+          onTouchTap={this.onBookAddClick.bind(this)}
+        >
+          文献追加
+        </MenuItem>
+        <Divider />
+        <MenuItem>文献の名前</MenuItem>
+      </MDrawer>
+    );
   }
 
   onBookAddClick() {

@@ -68,30 +68,30 @@ const tableData = [
 export default class WordTable extends React.Component {
   render() {
     return (
-            <div className="row">
-                <div className="col-xs-12">
-                    <Table multiSelectable onRowSelection={this.onRowSelection.bind(this)}>
-                        <TableHeader displaySelectAll={false}>
-                            <TableRow>
-                                <TableHeaderColumn>Name</TableHeaderColumn>
-                                <TableHeaderColumn>Status</TableHeaderColumn>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody showRowHover deselectOnClickaway={false}>
-                            {tableData.map((row, index) => (
-                                <TableRow key={index} selected={row.selected}>
-                                    <TableRowColumn>{row.name}</TableRowColumn>
-                                    <TableRowColumn>{row.status}</TableRowColumn>
-                                </TableRow>
-                            )) }
-                        </TableBody>
-                    </Table>
-                </div>
-                <div className="col-xs-12 end-xs">
-                    <RaisedButton label="消去" secondary />
-                </div>
-            </div>
-        );
+      <div className="row">
+        <div className="col-xs-12">
+          <Table multiSelectable onRowSelection={this.onRowSelection.bind(this)}>
+            <TableHeader displaySelectAll={false}>
+              <TableRow>
+                <TableHeaderColumn>Name</TableHeaderColumn>
+                <TableHeaderColumn>Status</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody showRowHover deselectOnClickaway={false}>
+              {tableData.map((row, index) => (
+                <TableRow key={index} selected={row.selected}>
+                  <TableRowColumn>{row.name}</TableRowColumn>
+                  <TableRowColumn>{row.status}</TableRowColumn>
+                </TableRow>
+              )) }
+            </TableBody>
+          </Table>
+        </div>
+        <div className="col-xs-12 end-xs">
+          <RaisedButton label="消去" secondary />
+        </div>
+      </div>
+    );
   }
 
   onRowSelection(selectedRows) {

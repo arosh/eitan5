@@ -24,26 +24,21 @@ const muiTheme = getMuiTheme({
 });
 
 const App = () => (
-    <MuiThemeProvider muiTheme={muiTheme}>
-        <div>
-            <AppBar />
-            <Drawer />
-            <BookAddDialog />
-            <div className="container container-fluid">
-                {/*
-                <Home/>
-                */}
-                <SourceCard title="文献のタイトル">
-                    著者名，URLなど
-                </SourceCard>
-                <WordEditor />
-                <WordTable />
-            </div>
-        </div>
-    </MuiThemeProvider>
+  <MuiThemeProvider muiTheme={muiTheme}>
+    <div>
+      <AppBar />
+      <Drawer />
+      <BookAddDialog />
+      <div className="container container-fluid">
+        <SourceCard title="文献のタイトル">著者名，URLなど</SourceCard>
+        <WordEditor />
+        <WordTable />
+      </div>
+    </div>
+  </MuiThemeProvider>
 );
 
 ReactDOM.render(
-    <App />,
-    document.getElementById('root')
+  <App />,
+  document.getElementById('root')
 );

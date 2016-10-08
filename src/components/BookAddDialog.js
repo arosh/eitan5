@@ -41,15 +41,15 @@ export default class BookAddDialog extends React.Component {
     ];
 
     return (
-            <Dialog
-              title="文献の追加"
-              actions={actions}
-              open={this.state.open}
-              onRequestClose={this.handleClose}
-            >
-                <TextField floatingLabelText="文献タイトル" multiLine fullWidth rows={2} />
-                <TextField floatingLabelText="説明" multiLine fullWidth rows={2} />
-            </Dialog>
-        );
+      <Dialog
+        title="文献の追加"
+        actions={actions}
+        open={this.state.open}
+        onRequestClose={this.handleClose}
+      >
+        <TextField floatingLabelText="文献タイトル" multiLine fullWidth rows={2} />
+        <TextField floatingLabelText="説明" multiLine fullWidth rows={2} />
+      </Dialog>
+    );
   }
 }
