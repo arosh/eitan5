@@ -1,9 +1,11 @@
 import React from 'react';
+
+import Divider from 'material-ui/Divider';
 import MDrawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import IconHome from 'material-ui/svg-icons/action/home';
 import IconAddCircle from 'material-ui/svg-icons/content/add-circle';
-import Divider from 'material-ui/Divider';
+
 import store from '../Store';
 import { UPDATE_DRAWER_OPEN } from '../EventTypes';
 
@@ -20,28 +22,41 @@ export default class Drawer extends React.Component {
       <MDrawer
         open={this.state.open}
         docked={false}
-        onRequestChange={this.onRequestChange.bind(this)}
+        onRequestChange={this.onDrawerRequestChange.bind(this)}
       >
-        <MenuItem leftIcon={<IconHome />}>Home</MenuItem>
+        <MenuItem
+          leftIcon={<IconHome />}
+          onTouchTap={this.onHomeTouchTap.bind(this)}
+        >
+          Home
+        </MenuItem>
         <MenuItem
           leftIcon={<IconAddCircle />}
-          onTouchTap={this.onBookAddClick.bind(this)}
+          onTouchTap={this.onBookAddTouchTap.bind(this)}
         >
           文献追加
         </MenuItem>
         <Divider />
-        <MenuItem>文献の名前</MenuItem>
+        <MenuItem onTouchTap={() => this.onBookTouchTap(114514)}>文献1</MenuItem>
       </MDrawer>
     );
   }
 
-  onBookAddClick() {
+  onBookAddTouchTap() {
     store.updateBookAddDialogOpen(true);
     store.updateDrawerOpen(false);
   }
 
-  onRequestChange(open) {
+  onDrawerRequestChange(open) {
     store.updateDrawerOpen(open);
+  }
+
+  onBookTouchTap(bookId) {
+    this.context.router.transitionTo(`/book/${bookId}`);
+  }
+
+  onHomeTouchTap() {
+    this.context.router.transitionTo('/');
   }
 
   onDrawerOpenUpdate() {
@@ -51,3 +66,7 @@ export default class Drawer extends React.Component {
     });
   }
 }
+
+Drawer.contextTypes = {
+  router: React.PropTypes.object,
+};

@@ -1,6 +1,8 @@
 import React from 'react';
+
 import MAppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
+
 import store from '../Store';
 import { UPDATE_LOGGED } from '../EventTypes';
 
@@ -34,6 +36,12 @@ class Logged extends React.Component {
 // https://github.com/callemall/material-ui/issues/5053
 Logged.muiName = 'FlatButton';
 
+const styles = {
+  title: {
+    cursor: 'pointer',
+  },
+};
+
 export default class AppBar extends React.Component {
   constructor(props) {
     super(props);
@@ -49,10 +57,15 @@ export default class AppBar extends React.Component {
     });
   }
 
+  onTitleTouchTap() {
+    this.context.router.transitionTo('/');
+  }
+
   render() {
     return (
       <MAppBar
-        title="eitan5go"
+        title={<span style={styles.title}>eitan5go</span>}
+        onTitleTouchTap={this.onTitleTouchTap.bind(this)}
         onLeftIconButtonTouchTap={() => store.updateDrawerOpen(true)}
         iconElementRight={this.state.logged ? <Logged /> : <Login />}
         className="appbar-fixed-top"
@@ -60,3 +73,7 @@ export default class AppBar extends React.Component {
     );
   }
 }
+
+AppBar.contextTypes = {
+  router: React.PropTypes.object,
+};
