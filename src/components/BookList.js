@@ -1,16 +1,16 @@
 import React from 'react';
+
+import { Card, CardTitle } from 'material-ui/Card';
 import { List, ListItem } from 'material-ui/List';
-import { Card } from 'material-ui/Card';
 import IconAdd from 'material-ui/svg-icons/content/add-circle';
-import Subheader from 'material-ui/Subheader';
 
 export default class BookList extends React.Component {
 
   render() {
     return (
       <Card>
+        <CardTitle title="文献一覧" />
         <List>
-          <Subheader>文献一覧</Subheader>
           <ListItem leftIcon={<IconAdd />} primaryText="文献追加 (ポップアップ)" />
           <ListItem
             insetChildren

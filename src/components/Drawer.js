@@ -43,8 +43,8 @@ export default class Drawer extends React.Component {
   }
 
   onBookAddTouchTap() {
-    store.updateBookAddDialogOpen(true);
     store.updateDrawerOpen(false);
+    store.updateBookAddDialogOpen(true);
   }
 
   onDrawerRequestChange(open) {
@@ -52,10 +52,12 @@ export default class Drawer extends React.Component {
   }
 
   onBookTouchTap(bookId) {
+    store.updateDrawerOpen(false);
     this.context.router.transitionTo(`/book/${bookId}`);
   }
 
   onHomeTouchTap() {
+    store.updateDrawerOpen(false);
     this.context.router.transitionTo('/');
   }
 

@@ -25,11 +25,13 @@
       "browser": true
     },
     "rules": {
+      "class-methods-use-this": "off",
+      "symbol-description": "off",
       "react/jsx-filename-extension": "off",
       "react/jsx-no-bind": "off",
-      "react/sort-comp": "off",
       "react/no-multi-comp": "off",
-      "class-methods-use-this": "off"
+      "react/prefer-stateless-function": "off",
+      "react/sort-comp": "off"
     }
   }
 }

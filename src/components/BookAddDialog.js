@@ -1,7 +1,9 @@
 import * as React from 'react';
+
 import Dialog from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
+
 import store from '../Store';
 import { UPDATE_BOOK_ADD_DIALOG_OPEN } from '../EventTypes';
 
