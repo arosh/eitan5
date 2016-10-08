@@ -20,4 +20,9 @@ const Panel = ({ heading, children }) => (
   </Paper>
 );
 
+Panel.propTypes = {
+  heading: React.PropTypes.string,
+  children: React.PropTypes.node,
+};
+
 export default Panel;

@@ -16,7 +16,7 @@ class Login extends React.Component {
   }
 }
 
-// ↓と{...this.props}を付けるとテーマが反映される
+// https://github.com/callemall/material-ui/issues/5053
 Login.muiName = 'FlatButton';
 
 class Logged extends React.Component {
@@ -31,7 +31,7 @@ class Logged extends React.Component {
   }
 }
 
-// ↓と{...this.props}を付けるとテーマが反映される
+// https://github.com/callemall/material-ui/issues/5053
 Logged.muiName = 'FlatButton';
 
 export default class AppBar extends React.Component {
