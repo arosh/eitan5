@@ -18,7 +18,7 @@ export default class WordEditor extends React.Component {
         <div className="row middle-xs">
           <div className="col-md-10 col-sm-9 col-xs-12">
             <TextField
-              id="WordEditor_TextField_sentence"
+              ref="sentence"
               value={this.state.sentence}
               onChange={e => this.setState({ sentence: e.target.value })}
               floatingLabelText="例文"
@@ -58,7 +58,8 @@ export default class WordEditor extends React.Component {
   }
 
   onCopySelectionClick() {
-    const textarea = document.getElementById('WordEditor_TextField_sentence');
+    const uniqueId = this.refs.sentence.uniqueId;
+    const textarea = document.getElementById(uniqueId);
     const s = textarea.selectionStart;
     const e = textarea.selectionEnd;
     const subString = this.state.sentence.substring(s, e);
