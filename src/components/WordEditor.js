@@ -18,7 +18,7 @@ export default class WordEditor extends React.Component {
         <div className="row middle-xs">
           <div className="col-md-10 col-sm-9 col-xs-12">
             <TextField
-              ref={(ref) => this.sentenceRef = ref}
+              ref={ref => this.sentenceRef = ref}
               value={this.state.sentence}
               onChange={e => this.setState({ sentence: e.target.value })}
               floatingLabelText="例文"

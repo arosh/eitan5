@@ -7,6 +7,8 @@ class Store extends EventEmitter {
     this.drawerOpen = false;
     this.bookAddDialogOpen = false;
     this.user = null;
+    this.bookTitle = 'The use of MMR, diversity-based reranking for reordering documents and producing summaries';
+    this.bookDescription = 'Carbonell, J. and Goldstein, J., Proc. ACM SIGIR (1998)';
   }
 
   updateDrawerOpen(open) {
@@ -39,6 +41,14 @@ class Store extends EventEmitter {
   logout() {
     this.user = null;
     this.emit(UPDATE_LOGGED);
+  }
+
+  getBookTitle() {
+    return this.bookTitle;
+  }
+
+  getBookDescription() {
+    return this.bookDescription;
   }
 }
 

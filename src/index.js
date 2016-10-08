@@ -9,7 +9,7 @@ import AppBar from './components/AppBar';
 import WordEditor from './components/WordEditor';
 import WordTable from './components/WordTable';
 import Drawer from './components/Drawer';
-import SourceCard from './components/SourceCard';
+import BookPanel from './components/BookPanel';
 // import Home from "./components/Home";
 import BookAddDialog from './components/BookAddDialog';
 
@@ -30,7 +30,7 @@ const App = () => (
       <Drawer />
       <BookAddDialog />
       <div className="container container-fluid">
-        <SourceCard title="文献のタイトル">著者名，URLなど</SourceCard>
+        <BookPanel />
         <WordEditor />
         <WordTable />
       </div>

@@ -19,6 +19,16 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "airbnb",
+    "env": {
+      "browser": true
+    },
+    "rules": {
+      "react/jsx-filename-extension": "off",
+      "react/jsx-no-bind": "off",
+      "react/sort-comp": "off",
+      "react/no-multi-comp": "off",
+      "class-methods-use-this": "off"
+    }
   }
 }
