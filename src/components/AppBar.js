@@ -2,19 +2,63 @@ import React from 'react';
 
 import MAppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
+import Popover from 'material-ui/Popover';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
 
 import store from '../Store';
 import firebaseService from '../FirebaseService';
 import { UPDATE_LOGGED } from '../EventTypes';
 
 class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+    };
+  }
+
+  onTouchTap(event) {
+    // This prevents ghost click.
+    event.preventDefault();
+
+    this.setState({
+      open: true,
+      anchorEl: event.currentTarget,
+    });
+  }
+
+  onRequestClose() {
+    this.setState({
+      open: false,
+    });
+  }
+
   render() {
     return (
-      <FlatButton {...this.props} label="ログイン" onTouchTap={this.onTouchTap.bind(this)} />
+      <div>
+        <FlatButton {...this.props} label="ログイン" onTouchTap={this.onTouchTap.bind(this)} />
+        <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+          onRequestClose={this.onRequestClose.bind(this)}
+        >
+          <Menu>
+            <MenuItem
+              primaryText="Sign in with Google"
+              onTouchTap={() => this.login('Google')}
+            />
+          </Menu>
+        </Popover>
+      </div>
     );
   }
-  onTouchTap() {
-    firebaseService.login();
+
+  login(providerName) {
+    this.setState({ open: false });
+    firebaseService.login(providerName);
   }
 }
 
@@ -27,6 +71,7 @@ class Logged extends React.Component {
       <FlatButton {...this.props} label="ログアウト" onTouchTap={this.onTouchTap.bind(this)} />
     );
   }
+
   onTouchTap() {
     firebaseService.logout();
   }

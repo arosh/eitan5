@@ -1,6 +1,5 @@
-/* global firebase */
-/* global firebaseui */
 import EventEmitter from 'eventemitter3';
+import * as firebase from 'firebase';
 
 import { UPDATE_LOGGED } from './EventTypes';
 import store from './Store';
@@ -11,7 +10,6 @@ class FirebaseService extends EventEmitter {
     this.user = null;
     this.setupApp();
     this.setupAuthStateChanged();
-    this.setupUI();
   }
 
   setupApp() {
@@ -27,59 +25,49 @@ class FirebaseService extends EventEmitter {
 
   setupAuthStateChanged() {
     firebase.auth().onAuthStateChanged((user) => {
-      if (user && user.uid === (this.user ? this.user.uid : null)) {
+      let oldUid = null;
+      let newUid = null;
+      if (this.user) {
+        oldUid = this.user.uid;
+      }
+      if (user) {
+        newUid = user.uid;
+      }
+
+      if (oldUid === newUid) {
         return;
       }
+
       this.user = user;
       this.emit(UPDATE_LOGGED);
     });
-  }
-
-  setupUI() {
-    // FirebaseUI config.
-    this.uiConfig = {
-      callbacks: {
-        // Called when the user has been successfully signed in.
-        signInSuccess(user, credential, redirectUrl) {
-          store.updateLoginDialogOpen(false);
-          // Do not redirect.
-          return false;
-        },
-      },
-      // Opens IDP Providers sign-in flow in a popup.
-      signInFlow: 'popup',
-      signInOptions: [
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-        // firebase.auth.GithubAuthProvider.PROVIDER_ID,
-        // firebase.auth.EmailAuthProvider.PROVIDER_ID,
-      ],
-      // Terms of service url.
-      tosUrl: 'https://eitan5-555df.firebaseapp.com',
-    };
-
-    // Initialize the FirebaseUI Widget using Firebase.
-    this.firebaseUI = new firebaseui.auth.AuthUI(firebase.auth());
-  }
-
-  startUI() {
-    this.firebaseUI.start('.firebaseui-auth', this.uiConfig);
   }
 
   isLogged() {
     return this.user !== null;
   }
 
-  login() {
-    store.updateLoginDialogOpen(true);
+  signInWithGoogle() {
+    // https://firebase.google.com/docs/auth/web/google-signin
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider).then((result) => {
+      store.updateSnackbar('ログインしました');
+    }).catch((error) => {
+      store.updateSnackbar(error.message);
+    });
+  }
+
+  login(providerName) {
+    if (providerName === 'Google') {
+      this.signInWithGoogle();
+    }
   }
 
   logout() {
     firebase.auth().signOut().then(() => {
-      // Sign-out successful.
+      store.updateSnackbar('ログアウトしました');
     }, (error) => {
-      console.error(error);
+      store.updateSnackbar(error.message);
     });
   }
 }

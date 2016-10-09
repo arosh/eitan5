@@ -14,7 +14,7 @@ import BookAddDialog from './components/BookAddDialog';
 import BookPanel from './components/BookPanel';
 import Drawer from './components/Drawer';
 import Home from './components/Home';
-import LoginDialog from './components/LoginDialog';
+import Snackbar from './components/Snackbar';
 import WordEditor from './components/WordEditor';
 import WordTable from './components/WordTable';
 
@@ -43,7 +43,7 @@ const App = () => (
         <AppBar />
         <Drawer />
         <BookAddDialog />
-        <LoginDialog />
+        <Snackbar />
         <div className="container container-fluid">
           <Match exactly pattern="/" component={Home} />
           <Match pattern="/book/:bookId" component={WordAdd} />

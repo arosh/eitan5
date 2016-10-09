@@ -1,4 +1,4 @@
 export const UPDATE_DRAWER_OPEN = Symbol();
 export const UPDATE_BOOK_ADD_DIALOG_OPEN = Symbol();
 export const UPDATE_LOGGED = Symbol();
-export const UPDATE_LOGIN_DIALOG_OPEN = Symbol();
+export const UPDATE_SNACKBAR = Symbol();
