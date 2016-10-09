@@ -74,11 +74,16 @@ class Logged extends React.Component {
 
   onTouchTap() {
     firebaseService.logout();
+    this.context.router.transitionTo('/');
   }
 }
 
 // https://github.com/callemall/material-ui/issues/5053
 Logged.muiName = 'FlatButton';
+
+Logged.contextTypes = {
+  router: React.PropTypes.object,
+};
 
 const styles = {
   title: {
