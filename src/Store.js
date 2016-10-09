@@ -1,11 +1,12 @@
 import EventEmitter from 'eventemitter3';
-import { UPDATE_DRAWER_OPEN, UPDATE_BOOK_ADD_DIALOG_OPEN } from './EventTypes';
+import { UPDATE_DRAWER_OPEN, UPDATE_BOOK_ADD_DIALOG_OPEN, UPDATE_LOGIN_DIALOG_OPEN } from './EventTypes';
 
 class Store extends EventEmitter {
   constructor() {
     super();
     this.drawerOpen = false;
     this.bookAddDialogOpen = false;
+    this.loginDialogOpen = false;
     this.bookTitle = 'The use of MMR, diversity-based reranking for reordering documents and producing summaries';
     this.bookDescription = 'Carbonell, J. and Goldstein, J., Proc. ACM SIGIR (1998)';
   }
@@ -26,6 +27,15 @@ class Store extends EventEmitter {
 
   isBookAddDialogOpen() {
     return this.bookAddDialogOpen;
+  }
+
+  updateLoginDialogOpen(open) {
+    this.loginDialogOpen = open;
+    this.emit(UPDATE_LOGIN_DIALOG_OPEN);
+  }
+
+  isLoginDialogOpen() {
+    return this.loginDialogOpen;
   }
 
   getBookTitle() {

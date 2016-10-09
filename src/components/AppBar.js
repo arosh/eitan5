@@ -14,8 +14,7 @@ class Login extends React.Component {
     );
   }
   onTouchTap() {
-    firebaseService.login();
-    alert('ログインボタンを押しました');
+    store.updateLoginDialogOpen(true);
   }
 }
 
@@ -53,6 +52,7 @@ export default class AppBar extends React.Component {
   }
 
   onLoggedUpdate() {
+    console.log(firebaseService.user);
     this.setState({
       logged: firebaseService.isLogged(),
     });

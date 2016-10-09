@@ -10,12 +10,13 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import * as colors from 'material-ui/styles/colors';
 
 import AppBar from './components/AppBar';
+import BookAddDialog from './components/BookAddDialog';
+import BookPanel from './components/BookPanel';
+import Drawer from './components/Drawer';
+import Home from './components/Home';
+import LoginDialog from './components/LoginDialog';
 import WordEditor from './components/WordEditor';
 import WordTable from './components/WordTable';
-import Drawer from './components/Drawer';
-import BookPanel from './components/BookPanel';
-import Home from './components/Home';
-import BookAddDialog from './components/BookAddDialog';
 
 injectTapEventPlugin();
 
@@ -42,6 +43,7 @@ const App = () => (
         <AppBar />
         <Drawer />
         <BookAddDialog />
+        <LoginDialog />
         <div className="container container-fluid">
           <Match exactly pattern="/" component={Home} />
           <Match pattern="/book/:bookId" component={WordAdd} />

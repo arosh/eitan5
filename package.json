@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "eventemitter3": "^2.0.2",
-    "firebase": "^3.4.1",
     "material-ui": "^0.16.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
@@ -30,6 +29,7 @@
     "rules": {
       "class-methods-use-this": "off",
       "symbol-description": "off",
+      "no-return-assign": "off",
       "react/jsx-filename-extension": "off",
       "react/jsx-no-bind": "off",
       "react/no-multi-comp": "off",
