@@ -70,11 +70,11 @@ export default class WordTable extends React.Component {
     return (
       <div className="row">
         <div className="col-xs-12">
-          <Table multiSelectable onRowSelection={this.onRowSelection.bind(this)}>
+          <Table multiSelectable onRowSelection={this.handleSelectionChanged.bind(this)}>
             <TableHeader displaySelectAll={false}>
               <TableRow>
-                <TableHeaderColumn>Name</TableHeaderColumn>
-                <TableHeaderColumn>Status</TableHeaderColumn>
+                <TableHeaderColumn>単語</TableHeaderColumn>
+                <TableHeaderColumn>答え</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody showRowHover deselectOnClickaway={false}>
@@ -94,7 +94,7 @@ export default class WordTable extends React.Component {
     );
   }
 
-  onRowSelection(selectedRows) {
+  handleSelectionChanged(selectedRows) {
     console.log(selectedRows);
   }
 }

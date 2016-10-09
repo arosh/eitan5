@@ -13,16 +13,16 @@ export default class Snackbar extends React.Component {
       open: false,
       message: '',
     };
-    store.on(UPDATE_SNACKBAR, this.onUpdateSnackbar.bind(this));
+    store.on(UPDATE_SNACKBAR, this.onMessageUpdated.bind(this));
   }
 
-  handleRequestClose() {
+  requestClose() {
     this.setState({
       open: false,
     });
   }
 
-  onUpdateSnackbar() {
+  onMessageUpdated() {
     const message = store.getSnackbarMessage();
     this.setState({
       open: true,
@@ -37,8 +37,8 @@ export default class Snackbar extends React.Component {
         message={this.state.message}
         action="Close"
         autoHideDuration={4000}
-        onActionTouchTap={this.handleRequestClose.bind(this)}
-        onRequestClose={this.handleRequestClose.bind(this)}
+        onActionTouchTap={this.requestClose.bind(this)}
+        onRequestClose={this.requestClose.bind(this)}
       />
     );
   }

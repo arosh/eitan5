@@ -11,19 +11,20 @@ export default class BookPanel extends React.Component {
       description: store.getBookDescription(),
     };
   }
+  
   render() {
     return (
       <Panel heading="文献情報">
         <TextField
           value={this.state.title}
-          onChange={this.onTitleChange.bind(this)}
+          onChange={this.handleTitleChanged.bind(this)}
           floatingLabelText="文献タイトル"
           multiLine
           fullWidth
           rows={1}
         />
         <TextField
-          onChange={this.onDescriptionChange.bind(this)}
+          onChange={this.handleDescriptionChanged.bind(this)}
           value={this.state.description}
           floatingLabelText="説明"
           multiLine
@@ -34,14 +35,14 @@ export default class BookPanel extends React.Component {
     );
   }
 
-  onTitleChange(e) {
+  handleTitleChanged(e) {
     // 遅延Ajaxみたいなのが必要かも
     this.setState({
       title: e.target.value,
     });
   }
 
-  onDescriptionChange(e) {
+  handleDescriptionChanged(e) {
     // 遅延Ajaxみたいなのが必要かも
     this.setState({
       description: e.target.value,

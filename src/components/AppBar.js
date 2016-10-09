@@ -18,7 +18,7 @@ class Login extends React.Component {
     };
   }
 
-  onTouchTap(event) {
+  handleClicked(event) {
     // This prevents ghost click.
     event.preventDefault();
 
@@ -28,7 +28,7 @@ class Login extends React.Component {
     });
   }
 
-  onRequestClose() {
+  requestClose() {
     this.setState({
       open: false,
     });
@@ -37,13 +37,13 @@ class Login extends React.Component {
   render() {
     return (
       <div>
-        <FlatButton {...this.props} label="ログイン" onTouchTap={this.onTouchTap.bind(this)} />
+        <FlatButton {...this.props} label="ログイン" onTouchTap={this.handleClicked.bind(this)} />
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-          onRequestClose={this.onRequestClose.bind(this)}
+          onRequestClose={this.requestClose.bind(this)}
         >
           <Menu>
             <MenuItem
@@ -68,11 +68,11 @@ Login.muiName = 'FlatButton';
 class Logged extends React.Component {
   render() {
     return (
-      <FlatButton {...this.props} label="ログアウト" onTouchTap={this.onTouchTap.bind(this)} />
+      <FlatButton {...this.props} label="ログアウト" onTouchTap={this.handleClicked.bind(this)} />
     );
   }
 
-  onTouchTap() {
+  handleClicked() {
     firebaseService.logout();
     this.context.router.transitionTo('/');
   }
@@ -97,16 +97,16 @@ export default class AppBar extends React.Component {
     this.state = {
       logged: firebaseService.isLogged(),
     };
-    firebaseService.on(UPDATE_LOGGED, this.onLoggedUpdate.bind(this));
+    firebaseService.on(UPDATE_LOGGED, this.onLoggedUpdated.bind(this));
   }
 
-  onLoggedUpdate() {
+  onLoggedUpdated() {
     this.setState({
       logged: firebaseService.isLogged(),
     });
   }
 
-  onTitleTouchTap() {
+  handleTitleClicked() {
     this.context.router.transitionTo('/');
   }
 
@@ -114,7 +114,7 @@ export default class AppBar extends React.Component {
     return (
       <MAppBar
         title={<span style={styles.title}>eitan5</span>}
-        onTitleTouchTap={this.onTitleTouchTap.bind(this)}
+        onTitleTouchTap={this.handleTitleClicked.bind(this)}
         onLeftIconButtonTouchTap={() => store.updateDrawerOpen(true)}
         iconElementRight={this.state.logged ? <Logged /> : <Login />}
         className="appbar-fixed-top"

@@ -31,7 +31,7 @@ export default class WordEditor extends React.Component {
           <div className="col-md-2 col-sm-3 center-sm col-xs-12 end-xs">
             <RaisedButton
               label="選択範囲をコピー"
-              onTouchTap={this.onCopySelectionClick.bind(this)}
+              onTouchTap={this.handleCopyClicked.bind(this)}
             />
           </div>
         </div>
@@ -58,7 +58,7 @@ export default class WordEditor extends React.Component {
     );
   }
 
-  onCopySelectionClick() {
+  handleCopyClicked() {
     const uniqueId = this.sentenceRef.uniqueId;
     const textarea = document.getElementById(uniqueId);
     const s = textarea.selectionStart;

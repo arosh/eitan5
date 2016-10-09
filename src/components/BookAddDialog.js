@@ -16,11 +16,7 @@ export default class BookAddDialog extends React.Component {
     store.on(UPDATE_BOOK_ADD_DIALOG_OPEN, this.onOpenUpdate.bind(this));
   }
 
-  handleOpen() {
-    store.updateBookAddDialogOpen(true);
-  }
-
-  handleClose() {
+  requestClose() {
     store.updateBookAddDialogOpen(false);
   }
 
@@ -33,21 +29,22 @@ export default class BookAddDialog extends React.Component {
     const actions = [
       <FlatButton
         label="キャンセル"
-        onTouchTap={this.handleClose}
+        onTouchTap={this.requestClose.bind(this)}
       />,
       <FlatButton
         label="追加"
+        onTouchTap={this.requestClose.bind(this)}
         primary
-        onTouchTap={this.handleClose}
       />,
     ];
 
     return (
       <Dialog
         title="文献の追加"
-        actions={actions}
         open={this.state.open}
-        onRequestClose={this.handleClose}
+        actions={actions}
+        onRequestClose={this.requestClose.bind(this)}
+        modal
       >
         <TextField floatingLabelText="文献タイトル" multiLine fullWidth rows={1} />
         <TextField floatingLabelText="説明" multiLine fullWidth rows={2} />

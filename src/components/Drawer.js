@@ -10,11 +10,10 @@ import store from '../Store';
 import { UPDATE_DRAWER_OPEN } from '../EventTypes';
 
 export default class Drawer extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = { open: store.isDrawerOpen() };
-    store.on(UPDATE_DRAWER_OPEN, this.onDrawerOpenUpdate.bind(this));
+    store.on(UPDATE_DRAWER_OPEN, this.onDrawerOpenUpdated.bind(this));
   }
 
   render() {
@@ -22,46 +21,46 @@ export default class Drawer extends React.Component {
       <MDrawer
         open={this.state.open}
         docked={false}
-        onRequestChange={this.onDrawerRequestChange.bind(this)}
+        onRequestChange={this.requestDrawerOpenChange.bind(this)}
       >
         <MenuItem
           leftIcon={<IconHome />}
-          onTouchTap={this.onHomeTouchTap.bind(this)}
+          onTouchTap={this.handleHomeClicked.bind(this)}
         >
           Home
         </MenuItem>
         <MenuItem
           leftIcon={<IconAddCircle />}
-          onTouchTap={this.onBookAddTouchTap.bind(this)}
+          onTouchTap={this.handleBookAddClicked.bind(this)}
         >
           文献追加
         </MenuItem>
         <Divider />
-        <MenuItem onTouchTap={() => this.onBookTouchTap(114514)}>文献1</MenuItem>
+        <MenuItem onTouchTap={() => this.handleBookClicked(114514)}>文献1</MenuItem>
       </MDrawer>
     );
   }
 
-  onBookAddTouchTap() {
+  requestDrawerOpenChange(open) {
+    store.updateDrawerOpen(open);
+  }
+
+  handleBookAddClicked() {
     store.updateDrawerOpen(false);
     store.updateBookAddDialogOpen(true);
   }
 
-  onDrawerRequestChange(open) {
-    store.updateDrawerOpen(open);
-  }
-
-  onBookTouchTap(bookId) {
+  handleBookClicked(bookId) {
     store.updateDrawerOpen(false);
     this.context.router.transitionTo(`/book/${bookId}`);
   }
 
-  onHomeTouchTap() {
+  handleHomeClicked() {
     store.updateDrawerOpen(false);
     this.context.router.transitionTo('/');
   }
 
-  onDrawerOpenUpdate() {
+  onDrawerOpenUpdated() {
     const open = store.isDrawerOpen();
     this.setState({
       open,

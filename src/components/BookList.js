@@ -4,14 +4,19 @@ import { Card, CardTitle } from 'material-ui/Card';
 import { List, ListItem } from 'material-ui/List';
 import IconAdd from 'material-ui/svg-icons/content/add-circle';
 
-export default class BookList extends React.Component {
+import store from '../Store';
 
+export default class BookList extends React.Component {
   render() {
     return (
       <Card>
         <CardTitle title="文献一覧" />
         <List>
-          <ListItem leftIcon={<IconAdd />} primaryText="文献追加 (ポップアップ)" />
+          <ListItem
+            leftIcon={<IconAdd />}
+            primaryText="文献追加 (ポップアップ)"
+            onTouchTap={this.handleBookAddClicked.bind(this)}
+          />
           <ListItem
             insetChildren
             primaryText="文献の名前"
@@ -30,5 +35,9 @@ export default class BookList extends React.Component {
         </List>
       </Card>
     );
+  }
+
+  handleBookAddClicked() {
+    store.updateBookAddDialogOpen(true);
   }
 }
