@@ -21,7 +21,6 @@ class Login extends React.Component {
   handleClicked(event) {
     // This prevents ghost click.
     event.preventDefault();
-
     this.setState({
       open: true,
       anchorEl: event.currentTarget,

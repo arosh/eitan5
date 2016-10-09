@@ -7,6 +7,7 @@ import store from './Store';
 class FirebaseService extends EventEmitter {
   constructor() {
     super();
+    // this.userをundefinedにすると不幸が起きる
     this.user = null;
     this.setupApp();
     this.setupAuthStateChanged();
