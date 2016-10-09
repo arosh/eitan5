@@ -14,7 +14,7 @@ export default class BookList extends React.Component {
         <List>
           <ListItem
             leftIcon={<IconAdd />}
-            primaryText="文献追加 (ポップアップ)"
+            primaryText="文献追加"
             onTouchTap={this.handleBookAddClicked.bind(this)}
           />
           <ListItem

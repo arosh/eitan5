@@ -1,5 +1,6 @@
 import EventEmitter from 'eventemitter3';
 import { UPDATE_DRAWER_OPEN, UPDATE_BOOK_ADD_DIALOG_OPEN, UPDATE_SNACKBAR } from './EventTypes';
+import firebaseService from './FirebaseService';
 
 class Store extends EventEmitter {
   constructor() {
@@ -45,6 +46,11 @@ class Store extends EventEmitter {
 
   getBookDescription() {
     return this.bookDescription;
+  }
+
+  addBook(title, description) {
+    const bookId = firebaseService.addBook(title, description);
+    return bookId;
   }
 }
 

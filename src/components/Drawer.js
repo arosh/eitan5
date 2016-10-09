@@ -52,7 +52,7 @@ export default class Drawer extends React.Component {
 
   handleBookClicked(bookId) {
     store.updateDrawerOpen(false);
-    this.context.router.transitionTo(`/book/${bookId}`);
+    this.context.router.transitionTo(`/books/${bookId}`);
   }
 
   handleHomeClicked() {

@@ -46,7 +46,7 @@ const App = () => (
         <Snackbar />
         <div className="container container-fluid">
           <Match exactly pattern="/" component={Home} />
-          <Match pattern="/book/:bookId" component={WordAdd} />
+          <Match pattern="/books/:bookId" component={WordAdd} />
         </div>
       </div>
     </BrowserRouter>

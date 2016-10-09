@@ -1,6 +1,17 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
+    "users": {
+      "$uid": {
+        ".read": "$uid == auth.uid",
+        ".write": "$uid == auth.uid"
+      }
+    },
+    "books": {
+      "$book_id": {
+        ".read": "data.child('uid').val() == auth.uid",
+        ".write": "!data.exists() || data.child('uid').val() == auth.uid",
+        ".validate": "newData.child('uid').val() == auth.uid"
+      }
+    }
   }
 }

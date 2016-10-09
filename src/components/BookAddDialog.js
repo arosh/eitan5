@@ -12,6 +12,8 @@ export default class BookAddDialog extends React.Component {
     super(props);
     this.state = {
       open: false,
+      title: '',
+      description: '',
     };
     store.on(UPDATE_BOOK_ADD_DIALOG_OPEN, this.onOpenUpdate.bind(this));
   }
@@ -20,9 +22,36 @@ export default class BookAddDialog extends React.Component {
     store.updateBookAddDialogOpen(false);
   }
 
+  requestSave() {
+    const { title, description } = this.state;
+    const bookId = store.addBook(title, description);
+    this.requestClose();
+    this.clear();
+    this.context.router.transitionTo(`/books/${bookId}`);
+  }
+
+  clear() {
+    this.setState({
+      title: '',
+      description: '',
+    });
+  }
+
   onOpenUpdate() {
     const open = store.isBookAddDialogOpen();
     this.setState({ open });
+  }
+
+  handleTitleChanged(e) {
+    this.setState({
+      title: e.target.value,
+    });
+  }
+
+  handleDescriptionChanged(e) {
+    this.setState({
+      description: e.target.value,
+    });
   }
 
   render() {
@@ -33,7 +62,7 @@ export default class BookAddDialog extends React.Component {
       />,
       <FlatButton
         label="追加"
-        onTouchTap={this.requestClose.bind(this)}
+        onTouchTap={this.requestSave.bind(this)}
         primary
       />,
     ];
@@ -46,9 +75,27 @@ export default class BookAddDialog extends React.Component {
         onRequestClose={this.requestClose.bind(this)}
         modal
       >
-        <TextField floatingLabelText="文献タイトル" multiLine fullWidth rows={1} />
-        <TextField floatingLabelText="説明" multiLine fullWidth rows={2} />
+        <TextField
+          floatingLabelText="文献タイトル"
+          value={this.state.title}
+          onChange={this.handleTitleChanged.bind(this)}
+          rows={1}
+          fullWidth
+          multiLine
+        />
+        <TextField
+          floatingLabelText="説明"
+          value={this.state.description}
+          onChange={this.handleDescriptionChanged.bind(this)}
+          rows={2}
+          fullWidth
+          multiLine
+        />
       </Dialog>
     );
   }
 }
+
+BookAddDialog.contextTypes = {
+  router: React.PropTypes.object,
+};
