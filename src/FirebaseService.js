@@ -8,6 +8,7 @@ import store from './Store';
 class FirebaseService extends EventEmitter {
   constructor() {
     super();
+    this.user = null;
     this.setupApp();
     this.setupAuthStateChanged();
     this.setupUI();
@@ -26,12 +27,10 @@ class FirebaseService extends EventEmitter {
 
   setupAuthStateChanged() {
     firebase.auth().onAuthStateChanged((user) => {
-      if (user && user.uid === this.user.uid) {
+      if (user && user.uid === (this.user ? this.user.uid : null)) {
         return;
       }
-
       this.user = user;
-      this.user = null;
       this.emit(UPDATE_LOGGED);
     });
   }
@@ -51,10 +50,10 @@ class FirebaseService extends EventEmitter {
       signInFlow: 'popup',
       signInOptions: [
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-        firebase.auth.GithubAuthProvider.PROVIDER_ID,
-        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+        // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+        // firebase.auth.GithubAuthProvider.PROVIDER_ID,
+        // firebase.auth.EmailAuthProvider.PROVIDER_ID,
       ],
       // Terms of service url.
       tosUrl: 'https://eitan5-555df.firebaseapp.com',
