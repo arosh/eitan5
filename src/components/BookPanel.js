@@ -11,7 +11,7 @@ export default class BookPanel extends React.Component {
       description: store.getBookDescription(),
     };
   }
-  
+
   render() {
     return (
       <Panel heading="文献情報">

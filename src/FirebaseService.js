@@ -51,6 +51,7 @@ class FirebaseService extends EventEmitter {
   signInWithGoogle() {
     // https://firebase.google.com/docs/auth/web/google-signin
     const provider = new firebase.auth.GoogleAuthProvider();
+    // eslint-disable-next-line no-unused-vars
     firebase.auth().signInWithPopup(provider).then((result) => {
       store.updateSnackbar('ログインしました');
     }).catch((error) => {
