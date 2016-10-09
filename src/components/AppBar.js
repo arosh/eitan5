@@ -4,6 +4,7 @@ import MAppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 
 import store from '../Store';
+import firebaseService from '../FirebaseService';
 import { UPDATE_LOGGED } from '../EventTypes';
 
 class Login extends React.Component {
@@ -13,7 +14,7 @@ class Login extends React.Component {
     );
   }
   onTouchTap() {
-    store.login();
+    firebaseService.login();
     alert('ログインボタンを押しました');
   }
 }
@@ -28,7 +29,7 @@ class Logged extends React.Component {
     );
   }
   onTouchTap() {
-    store.logout();
+    firebaseService.logout();
     alert('ログアウトボタンを押しました');
   }
 }
@@ -46,14 +47,14 @@ export default class AppBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      logged: store.isLogged(),
+      logged: firebaseService.isLogged(),
     };
-    store.on(UPDATE_LOGGED, this.onLoggedUpdate.bind(this));
+    firebaseService.on(UPDATE_LOGGED, this.onLoggedUpdate.bind(this));
   }
 
   onLoggedUpdate() {
     this.setState({
-      logged: store.isLogged(),
+      logged: firebaseService.isLogged(),
     });
   }
 
