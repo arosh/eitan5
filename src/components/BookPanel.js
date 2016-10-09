@@ -1,5 +1,8 @@
 import React from 'react';
+
+import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+
 import Panel from './Panel';
 import store from '../Store';
 
@@ -31,6 +34,12 @@ export default class BookPanel extends React.Component {
           fullWidth
           rows={2}
         />
+        <div className="end-xs margin-top-1rem">
+          <RaisedButton
+            label="変更を保存"
+            primary
+          />
+        </div>
       </Panel>
     );
   }
