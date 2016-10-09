@@ -21,6 +21,7 @@ export default class LoginDialog extends React.Component {
     this.setState({ open }, () => {
       if (open) {
         firebaseService.startUI();
+        // Dialogのrepositionを呼ぶため
         this.forceUpdate();
       }
     });
@@ -41,6 +42,7 @@ export default class LoginDialog extends React.Component {
         modal={false}
         open={this.state.open}
         onRequestClose={() => store.updateLoginDialogOpen(false)}
+        autoScrollBodyContent
       >
         <div className="firebaseui-auth" />
       </Dialog>

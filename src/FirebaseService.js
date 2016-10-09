@@ -1,13 +1,15 @@
 /* global firebase */
 /* global firebaseui */
 import EventEmitter from 'eventemitter3';
+
 import { UPDATE_LOGGED } from './EventTypes';
+import store from './Store';
 
 class FirebaseService extends EventEmitter {
   constructor() {
     super();
     this.setupApp();
-    this.setupAutoStateChanged();
+    this.setupAuthStateChanged();
     this.setupUI();
   }
 
@@ -22,30 +24,29 @@ class FirebaseService extends EventEmitter {
     firebase.initializeApp(config);
   }
 
-  setupAutoStateChanged() {
+  setupAuthStateChanged() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user && user.uid === this.user.uid) {
         return;
       }
-      if (user) {
-        this.handleSignedInUser(user);
-      } else {
-        this.handleSignedOutUser();
-      }
+
+      this.user = user;
+      this.user = null;
+      this.emit(UPDATE_LOGGED);
     });
   }
 
   setupUI() {
     // FirebaseUI config.
     this.uiConfig = {
-      // callbacks: {
-      //   // Called when the user has been successfully signed in.
-      //   signInSuccess(user, credential, redirectUrl) {
-      //     this.handleSignedInUser(user);
-      //     // Do not redirect.
-      //     return false;
-      //   },
-      // },
+      callbacks: {
+        // Called when the user has been successfully signed in.
+        signInSuccess(user, credential, redirectUrl) {
+          store.updateLoginDialogOpen(false);
+          // Do not redirect.
+          return false;
+        },
+      },
       // Opens IDP Providers sign-in flow in a popup.
       signInFlow: 'popup',
       signInOptions: [
@@ -72,21 +73,15 @@ class FirebaseService extends EventEmitter {
   }
 
   login() {
-
+    store.updateLoginDialogOpen(true);
   }
 
   logout() {
-
-  }
-
-  handleSignedInUser(user) {
-    this.user = user;
-    this.emit(UPDATE_LOGGED);
-  }
-
-  handleSignedOutUser() {
-    this.user = null;
-    this.emit(UPDATE_LOGGED);
+    firebase.auth().signOut().then(() => {
+      // Sign-out successful.
+    }, (error) => {
+      console.error(error);
+    });
   }
 }
 
