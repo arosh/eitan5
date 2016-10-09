@@ -64,7 +64,7 @@ export default class AppBar extends React.Component {
   render() {
     return (
       <MAppBar
-        title={<span style={styles.title}>eitan5go</span>}
+        title={<span style={styles.title}>eitan5</span>}
         onTitleTouchTap={this.onTitleTouchTap.bind(this)}
         onLeftIconButtonTouchTap={() => store.updateDrawerOpen(true)}
         iconElementRight={this.state.logged ? <Logged /> : <Login />}
