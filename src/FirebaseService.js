@@ -87,7 +87,7 @@ class FirebaseService extends EventEmitter {
     return this.user.uid;
   }
 
-  addBook(title, description, onSuccess) {
+  createBook(title, description, onSuccess) {
     const uid = this.getUID();
     firebase.database().ref('/books').push({
       uid,
@@ -107,7 +107,7 @@ class FirebaseService extends EventEmitter {
     });
   }
 
-  addWord(bookId, word, answer, sentence, onSuccess) {
+  createWord(bookId, word, answer, sentence, onSuccess) {
     const uid = this.getUID();
     firebase.database().ref(`/books/${bookId}/words`).push({
       word,
@@ -127,6 +127,20 @@ class FirebaseService extends EventEmitter {
     }).catch((error) => {
       store.setSnackbarMessage(error.message);
     });
+  }
+
+  deleteBook(bookId, onSuccess) {
+    const uid = this.getUID();
+    firebase.database().ref(`/books/${bookId}`).remove()
+      .then(() => {
+        return firebase.database().ref(`/users/${uid}/books/${bookId}`).remove()
+          .then(() => {
+            store.setSnackbarMessage('文献を削除しました');
+            onSuccess();
+          });
+      }).catch((error) => {
+        store.setSnackbarMessage(error.message);
+      });
   }
 
   fetchBook(bookId) {
