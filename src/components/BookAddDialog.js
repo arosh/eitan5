@@ -14,8 +14,52 @@ export default class BookAddDialog extends React.Component {
       open: false,
       title: '',
       description: '',
+      allowSubmittion: false,
     };
     store.on(UPDATE_BOOK_ADD_DIALOG_OPEN, this.onOpenUpdate.bind(this));
+  }
+
+  render() {
+    const actions = [
+      <FlatButton
+        label="キャンセル"
+        onTouchTap={this.requestClose.bind(this)}
+      />,
+      <FlatButton
+        label="追加"
+        onTouchTap={this.requestSave.bind(this)}
+        disabled={!this.state.allowSubmittion}
+        primary
+      />,
+    ];
+
+    return (
+      <Dialog
+        title="文献の追加"
+        open={this.state.open}
+        actions={actions}
+        onRequestClose={this.requestClose.bind(this)}
+        autoScrollBodyContent
+        modal
+      >
+        <TextField
+          floatingLabelText="文献タイトル（必須）"
+          value={this.state.title}
+          onChange={this.handleTitleChanged.bind(this)}
+          rows={1}
+          fullWidth
+          multiLine
+        />
+        <TextField
+          floatingLabelText="説明"
+          value={this.state.description}
+          onChange={this.handleDescriptionChanged.bind(this)}
+          rows={2}
+          fullWidth
+          multiLine
+        />
+      </Dialog>
+    );
   }
 
   requestClose() {
@@ -35,66 +79,46 @@ export default class BookAddDialog extends React.Component {
     this.setState({
       title: '',
       description: '',
+    }, () => {
+      this.validate();
     });
   }
 
   onOpenUpdate() {
     const open = store.isBookAddDialogOpen();
-    this.setState({ open });
+    this.setState({
+      open,
+    }, () => {
+      this.validate();
+    });
   }
 
   handleTitleChanged(e) {
     this.setState({
       title: e.target.value,
+    }, () => {
+      this.validate();
     });
   }
 
   handleDescriptionChanged(e) {
     this.setState({
       description: e.target.value,
+    }, () => {
+      this.validate();
     });
   }
 
-  render() {
-    const actions = [
-      <FlatButton
-        label="キャンセル"
-        onTouchTap={this.requestClose.bind(this)}
-      />,
-      <FlatButton
-        label="追加"
-        onTouchTap={this.requestSave.bind(this)}
-        primary
-      />,
-    ];
-
-    return (
-      <Dialog
-        title="文献の追加"
-        open={this.state.open}
-        actions={actions}
-        onRequestClose={this.requestClose.bind(this)}
-        autoScrollBodyContent
-        modal
-      >
-        <TextField
-          floatingLabelText="文献タイトル"
-          value={this.state.title}
-          onChange={this.handleTitleChanged.bind(this)}
-          rows={1}
-          fullWidth
-          multiLine
-        />
-        <TextField
-          floatingLabelText="説明"
-          value={this.state.description}
-          onChange={this.handleDescriptionChanged.bind(this)}
-          rows={2}
-          fullWidth
-          multiLine
-        />
-      </Dialog>
-    );
+  validate() {
+    if (this.state.title.length === 0) {
+      this.setState({
+        allowSubmittion: false,
+      });
+      return;
+    }
+    this.setState({
+      allowSubmittion: true,
+    });
   }
 }
 

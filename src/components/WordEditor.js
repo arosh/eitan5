@@ -43,7 +43,7 @@ export default class WordEditor extends React.Component {
             <TextField
               value={this.state.word}
               onChange={this.handleWordChanged.bind(this)}
-              floatingLabelText="単語"
+              floatingLabelText="単語（必須）"
               fullWidth
             />
           </div>

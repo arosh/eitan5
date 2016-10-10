@@ -1,16 +1,31 @@
 {
   "rules": {
+    "books": {
+      "$bookId": {
+        ".read": "data.child('uid').val() == auth.uid",
+        ".write": "!data.exists() || data.child('uid').val() == auth.uid",
+        ".validate": "newData.child('uid').val() == auth.uid && newData.child('title').val().length > 0",
+        "words": {
+          "$wordId": {
+            ".validate": "newData.child('word').val().length > 0"
+          }
+        }
+      }
+    },
     "users": {
       "$uid": {
         ".read": "$uid == auth.uid",
-        ".write": "$uid == auth.uid"
-      }
-    },
-    "books": {
-      "$book_id": {
-        ".read": "data.child('uid').val() == auth.uid",
-        ".write": "!data.exists() || data.child('uid').val() == auth.uid",
-        ".validate": "newData.child('uid').val() == auth.uid"
+        ".write": "$uid == auth.uid",
+        "books": {
+          "$bookId": {
+            ".validate": "newData.child('title').val().length > 0"
+          }
+        },
+        "recentWords": {
+          "$wordId": {
+            ".validate": "newData.child('word').val().length > 0"
+          }
+        }
       }
     }
   }
