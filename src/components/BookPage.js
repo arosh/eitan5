@@ -22,7 +22,15 @@ BookPaneOn.propTypes = {
 export default class BookPage extends React.Component {
   constructor(props) {
     super(props);
-    this.onBookUpdated();
+    const bookId = this.props.params.bookId;
+    this.fetchBook(bookId);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const nextBookId = nextProps.params.bookId;
+    if (this.props.params.bookId !== nextBookId) {
+      this.fetchBook(nextBookId);
+    }
   }
 
   render() {
@@ -58,8 +66,8 @@ export default class BookPage extends React.Component {
       this.state.bookDescription);
   }
 
-  onBookUpdated() {
-    store.fetchBook(this.props.params.bookId).then((snapshot) => {
+  fetchBook(bookId) {
+    store.fetchBook(bookId).then((snapshot) => {
       const book = snapshot.val();
       this.setState({
         bookTitle: book.title,
