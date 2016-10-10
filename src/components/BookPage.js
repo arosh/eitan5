@@ -28,10 +28,10 @@ export default class BookPage extends React.Component {
     return (<BookPaneOn
       title={this.state.bookTitle}
       description={this.state.bookDescription}
-      onTitleChange={this.handleBookTitleChanged.bind(this) }
-      onDescriptionChange={this.handleBookDescriptionChanged.bind(this) }
-      onSaveBookClick={this.handleSaveBookClicked.bind(this) }
-      />);
+      onTitleChange={this.handleBookTitleChanged.bind(this)}
+      onDescriptionChange={this.handleBookDescriptionChanged.bind(this)}
+      onSaveBookClick={this.handleSaveBookClicked.bind(this)}
+    />);
   }
 
   handleBookTitleChanged(e) {

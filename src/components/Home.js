@@ -8,7 +8,7 @@ import { UPDATE_LOGGED, UPDATE_BOOKS } from '../EventTypes';
 import firebaseService from '../FirebaseService';
 import store from '../Store';
 
-const Logged = ({books, words}) => (
+const Logged = ({ books, words }) => (
   <div>
     <div className="row">
       <div className="col-xs-12">

@@ -7,7 +7,12 @@ import IconHome from 'material-ui/svg-icons/action/home';
 import IconAddCircle from 'material-ui/svg-icons/content/add-circle';
 
 import store from '../Store';
-import { UPDATE_DRAWER_OPEN, UPDATE_BOOKS } from '../EventTypes';
+import firebaseService from '../FirebaseService';
+import {
+  UPDATE_DRAWER_OPEN,
+  UPDATE_BOOKS,
+  UPDATE_LOGGED,
+} from '../EventTypes';
 
 class BookItems extends React.Component {
   render() {
@@ -29,9 +34,11 @@ export default class Drawer extends React.Component {
     this.state = {
       open: store.isDrawerOpen(),
       books: store.getBooks() || [],
+      logged: false,
     };
     store.on(UPDATE_DRAWER_OPEN, this.onDrawerOpenUpdated.bind(this));
     store.on(UPDATE_BOOKS, this.onBooksUpdated.bind(this));
+    firebaseService.on(UPDATE_LOGGED, this.onLoggedUpdated.bind(this));
   }
 
   render() {
@@ -47,12 +54,13 @@ export default class Drawer extends React.Component {
         >
           Home
         </MenuItem>
-        <MenuItem
-          leftIcon={<IconAddCircle />}
-          onTouchTap={this.handleBookAddClicked.bind(this)}
-        >
-          文献追加
-        </MenuItem>
+        {this.state.logged ?
+          <MenuItem
+            leftIcon={<IconAddCircle />}
+            onTouchTap={this.handleBookAddClicked.bind(this)}
+          >
+            文献追加
+          </MenuItem> : <div />}
         <Divider />
         <BookItems
           books={this.state.books}
@@ -92,6 +100,12 @@ export default class Drawer extends React.Component {
     const books = store.getBooks();
     this.setState({
       books,
+    });
+  }
+
+  onLoggedUpdated() {
+    this.setState({
+      logged: firebaseService.isLogged(),
     });
   }
 }
