@@ -13,6 +13,7 @@ export default class BookPage extends React.Component {
       bookTitle: '',
       bookDescription: '',
     };
+
     store.getBookPromise(props.params.bookId).then((snapshot) => {
       const book = snapshot.val();
       this.setState({
