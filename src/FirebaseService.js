@@ -39,11 +39,15 @@ class FirebaseService extends EventEmitter {
       if (oldId !== null) {
         firebase.database().ref(`/users/${oldId}/books`)
           .off('value', this.handleBookAdd.bind(this));
+      } else {
+        this.handleBookAdd(null);
       }
 
       if (newId !== null) {
         firebase.database().ref(`/users/${newId}/books`)
           .on('value', this.handleBookAdd.bind(this));
+      } else {
+        this.handleBookAdd(null);
       }
     });
   }
@@ -102,8 +106,11 @@ class FirebaseService extends EventEmitter {
   }
 
   handleBookAdd(snapshot) {
-    const books = snapshot.exists() ? values(snapshot.val()) : [];
-    this.emit(UPDATE_BOOKS, books);
+    if (snapshot && snapshot.exists()) {
+      this.emit(UPDATE_BOOKS, values(snapshot.val()));
+    } else {
+      this.emit(UPDATE_BOOKS, []);
+    }
   }
 
   updateBook(bookId, title, description) {
