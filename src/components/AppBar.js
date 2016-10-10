@@ -85,6 +85,10 @@ Logged.contextTypes = {
 };
 
 const styles = {
+  appbar: {
+    top: 0,
+    position: 'fixed',
+  },
   title: {
     cursor: 'pointer',
   },
@@ -116,7 +120,7 @@ export default class AppBar extends React.Component {
         onTitleTouchTap={this.handleTitleClicked.bind(this)}
         onLeftIconButtonTouchTap={() => store.setDrawerOpen(true)}
         iconElementRight={this.state.logged ? <Logged /> : <Login />}
-        className="appbar-fixed-top"
+        style={styles.appbar}
       />
     );
   }

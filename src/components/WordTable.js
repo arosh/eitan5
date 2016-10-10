@@ -3,6 +3,12 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 import RaisedButton from 'material-ui/RaisedButton';
 import store from '../Store';
 
+const styles = {
+  rowColumn: {
+    whiteSpace: 'wrap',
+  },
+};
+
 export default class WordTable extends React.Component {
   constructor(props) {
     super(props);
@@ -21,7 +27,10 @@ export default class WordTable extends React.Component {
     return (
       <div className="row margin-top-1rem">
         <div className="col-xs-12">
-          <Table multiSelectable onRowSelection={this.handleSelectedRowsChanged.bind(this)}>
+          <Table
+            onRowSelection={this.handleSelectedRowsChanged.bind(this)}
+            multiSelectable
+          >
             <TableHeader displaySelectAll={false}>
               <TableRow>
                 <TableHeaderColumn>単語</TableHeaderColumn>
@@ -35,9 +44,9 @@ export default class WordTable extends React.Component {
                   key={word.wordId}
                   selected={this.state.selectedRows.indexOf(index) !== -1}
                 >
-                  <TableRowColumn>{word.word}</TableRowColumn>
-                  <TableRowColumn>{word.answer}</TableRowColumn>
-                  <TableRowColumn>{word.sentence}</TableRowColumn>
+                  <TableRowColumn style={styles.rowColumn}>{word.word}</TableRowColumn>
+                  <TableRowColumn style={styles.rowColumn}>{word.answer}</TableRowColumn>
+                  <TableRowColumn style={styles.rowColumn}>{word.sentence}</TableRowColumn>
                 </TableRow>
               ))}
             </TableBody>
