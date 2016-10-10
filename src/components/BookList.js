@@ -38,6 +38,6 @@ export default class BookList extends React.Component {
   }
 
   handleBookAddClicked() {
-    store.updateBookAddDialogOpen(true);
+    store.setBookAddDialogOpen(true);
   }
 }

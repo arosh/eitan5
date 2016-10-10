@@ -114,7 +114,7 @@ export default class AppBar extends React.Component {
       <MAppBar
         title={<span style={styles.title}>eitan5</span>}
         onTitleTouchTap={this.handleTitleClicked.bind(this)}
-        onLeftIconButtonTouchTap={() => store.updateDrawerOpen(true)}
+        onLeftIconButtonTouchTap={() => store.setDrawerOpen(true)}
         iconElementRight={this.state.logged ? <Logged /> : <Login />}
         className="appbar-fixed-top"
       />

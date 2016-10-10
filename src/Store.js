@@ -17,7 +17,7 @@ class Store extends EventEmitter {
     firebaseService.on(UPDATE_BOOKS, this.onBooksUpdated.bind(this));
   }
 
-  updateDrawerOpen(open) {
+  setDrawerOpen(open) {
     this.drawerOpen = open;
     this.emit(UPDATE_DRAWER_OPEN);
   }
@@ -26,7 +26,7 @@ class Store extends EventEmitter {
     return this.drawerOpen;
   }
 
-  updateBookAddDialogOpen(open) {
+  setBookAddDialogOpen(open) {
     this.bookAddDialogOpen = open;
     this.emit(UPDATE_BOOK_ADD_DIALOG_OPEN);
   }
@@ -35,7 +35,7 @@ class Store extends EventEmitter {
     return this.bookAddDialogOpen;
   }
 
-  updateSnackbar(message) {
+  setSnackbarMessage(message) {
     this.snackbarMessage = message;
     this.emit(UPDATE_SNACKBAR);
   }
@@ -47,6 +47,10 @@ class Store extends EventEmitter {
   addBook(title, description) {
     const bookId = firebaseService.addBook(title, description);
     return bookId;
+  }
+
+  updateBook(bookId, title, description) {
+    firebaseService.updateBook(bookId, title, description);
   }
 
   getBookPromise(bookId) {

@@ -63,21 +63,21 @@ export default class Drawer extends React.Component {
   }
 
   requestDrawerOpenChange(open) {
-    store.updateDrawerOpen(open);
+    store.setDrawerOpen(open);
   }
 
   handleBookAddClicked() {
-    store.updateDrawerOpen(false);
-    store.updateBookAddDialogOpen(true);
+    store.setDrawerOpen(false);
+    store.setBookAddDialogOpen(true);
   }
 
   handleBookClicked(bookId) {
-    store.updateDrawerOpen(false);
+    store.setDrawerOpen(false);
     this.context.router.transitionTo(`/books/${bookId}`);
   }
 
   handleHomeClicked() {
-    store.updateDrawerOpen(false);
+    store.setDrawerOpen(false);
     this.context.router.transitionTo('/');
   }
 

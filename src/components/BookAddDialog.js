@@ -19,7 +19,7 @@ export default class BookAddDialog extends React.Component {
   }
 
   requestClose() {
-    store.updateBookAddDialogOpen(false);
+    store.setBookAddDialogOpen(false);
   }
 
   requestSave() {

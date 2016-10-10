@@ -57,9 +57,9 @@ class FirebaseService extends EventEmitter {
     const provider = new firebase.auth.GoogleAuthProvider();
     // eslint-disable-next-line no-unused-vars
     firebase.auth().signInWithPopup(provider).then((result) => {
-      store.updateSnackbar('ログインしました');
+      store.setSnackbarMessage('ログインしました');
     }).catch((error) => {
-      store.updateSnackbar(error.message);
+      store.setSnackbarMessage(error.message);
     });
   }
 
@@ -71,9 +71,9 @@ class FirebaseService extends EventEmitter {
 
   logout() {
     firebase.auth().signOut().then(() => {
-      store.updateSnackbar('ログアウトしました');
+      store.setSnackbarMessage('ログアウトしました');
     }, (error) => {
-      store.updateSnackbar(error.message);
+      store.setSnackbarMessage(error.message);
     });
   }
 
@@ -89,7 +89,7 @@ class FirebaseService extends EventEmitter {
       title,
       description,
     }).key;
-    database.ref(`/users/${uid}/books`).push({
+    database.ref(`/users/${uid}/books/${key}`).set({
       title,
       description,
       bookId: key,
@@ -102,7 +102,20 @@ class FirebaseService extends EventEmitter {
   }
 
   handleBookAdd(snapshot) {
-    this.emit(UPDATE_BOOKS, values(snapshot.val()));
+    const books = snapshot.exists() ? values(snapshot.val()) : [];
+    this.emit(UPDATE_BOOKS, books);
+  }
+
+  updateBook(bookId, title, description) {
+    const uid = this.getUID();
+    const updates = {};
+    updates[`/books/${bookId}/title`] = title;
+    updates[`/books/${bookId}/description`] = description;
+    updates[`/users/${uid}/books/${bookId}/title`] = title;
+    updates[`/users/${uid}/books/${bookId}/description`] = description;
+    firebase.database().ref().update(updates).then(() => {
+      store.setSnackbarMessage('変更を保存しました');
+    });
   }
 }
 

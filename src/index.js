@@ -34,7 +34,7 @@ const App = () => (
         <Drawer />
         <BookAddDialog />
         <Snackbar />
-        <div className="container container-padding">
+        <div className="container">
           <Match exactly pattern="/" component={Home} />
           <Match pattern="/books/:bookId" component={BookPage} />
         </div>

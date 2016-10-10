@@ -5,7 +5,7 @@ import TextField from 'material-ui/TextField';
 
 import Panel from './Panel';
 
-const BookPanel = ({ title, description, onTitleChange, onDescriptionChange }) => (
+const BookPanel = ({ title, description, onTitleChange, onDescriptionChange, onSaveBookClick }) => (
   <Panel heading="文献情報">
     <TextField
       value={title}
@@ -26,10 +26,19 @@ const BookPanel = ({ title, description, onTitleChange, onDescriptionChange }) =
     <div className="end-xs margin-top-1rem">
       <RaisedButton
         label="変更を保存"
+        onTouchTap={onSaveBookClick}
         primary
       />
     </div>
   </Panel>
 );
+
+BookPanel.propTypes = {
+  title: React.PropTypes.string,
+  description: React.PropTypes.string,
+  onTitleChange: React.PropTypes.func,
+  onDescriptionChange: React.PropTypes.func,
+  onSaveBookClick: React.PropTypes.func,
+};
 
 export default BookPanel;
