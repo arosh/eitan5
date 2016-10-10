@@ -7,10 +7,9 @@ class Store extends EventEmitter {
     super();
     this.drawerOpen = false;
     this.bookAddDialogOpen = false;
-    this.loginDialogOpen = false;
     this.snackbarMessage = '';
-    this.bookTitle = 'The use of MMR, diversity-based reranking for reordering documents and producing summaries';
-    this.bookDescription = 'Carbonell, J. and Goldstein, J., Proc. ACM SIGIR (1998)';
+    // this.bookTitle = 'The use of MMR, diversity-based reranking for reordering documents and producing summaries';
+    // this.bookDescription = 'Carbonell, J. and Goldstein, J., Proc. ACM SIGIR (1998)';
   }
 
   updateDrawerOpen(open) {
@@ -40,17 +39,13 @@ class Store extends EventEmitter {
     return this.snackbarMessage;
   }
 
-  getBookTitle() {
-    return this.bookTitle;
-  }
-
-  getBookDescription() {
-    return this.bookDescription;
-  }
-
   addBook(title, description) {
     const bookId = firebaseService.addBook(title, description);
     return bookId;
+  }
+
+  getBookPromise(bookId) {
+    return firebaseService.getBookPromise(bookId);
   }
 }
 

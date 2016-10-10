@@ -80,17 +80,21 @@ class FirebaseService extends EventEmitter {
   addBook(title, description) {
     const database = firebase.database();
     const uid = this.getUID();
-    const key = database.ref('books').push({
+    const key = database.ref('/books').push({
       uid,
       title,
       description,
     }).key;
-    database.ref(`users/${uid}/books`).push({
+    database.ref(`/users/${uid}/books`).push({
       title,
       description,
       bookId: key,
     });
     return key;
+  }
+
+  getBookPromise(bookId) {
+    return firebase.database().ref(`/books/${bookId}`).once('value');
   }
 }
 

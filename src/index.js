@@ -11,12 +11,10 @@ import * as colors from 'material-ui/styles/colors';
 
 import AppBar from './components/AppBar';
 import BookAddDialog from './components/BookAddDialog';
-import BookPanel from './components/BookPanel';
+import BookPage from './components/BookPage';
 import Drawer from './components/Drawer';
 import Home from './components/Home';
 import Snackbar from './components/Snackbar';
-import WordEditor from './components/WordEditor';
-import WordTable from './components/WordTable';
 
 injectTapEventPlugin();
 
@@ -28,14 +26,6 @@ const muiTheme = getMuiTheme({
   fontFamily: "'Roboto', 'Noto Sans JP', 'sans-serif'",
 });
 
-const WordAdd = () => (
-  <div>
-    <BookPanel />
-    <WordEditor />
-    <WordTable />
-  </div>
-);
-
 const App = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
     <BrowserRouter>
@@ -44,9 +34,9 @@ const App = () => (
         <Drawer />
         <BookAddDialog />
         <Snackbar />
-        <div className="container container-fluid">
+        <div className="container container-padding">
           <Match exactly pattern="/" component={Home} />
-          <Match pattern="/books/:bookId" component={WordAdd} />
+          <Match pattern="/books/:bookId" component={BookPage} />
         </div>
       </div>
     </BrowserRouter>

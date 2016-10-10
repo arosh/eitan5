@@ -73,6 +73,7 @@ export default class BookAddDialog extends React.Component {
         open={this.state.open}
         actions={actions}
         onRequestClose={this.requestClose.bind(this)}
+        autoScrollBodyContent
         modal
       >
         <TextField
