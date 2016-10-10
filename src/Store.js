@@ -4,6 +4,7 @@ import {
   UPDATE_BOOK_ADD_DIALOG_OPEN,
   UPDATE_SNACKBAR,
   UPDATE_BOOKS,
+  UPDATE_RECENT_WORDS,
 } from './EventTypes';
 import firebaseService from './FirebaseService';
 
@@ -14,8 +15,9 @@ class Store extends EventEmitter {
     this.bookAddDialogOpen = false;
     this.snackbarMessage = '';
     this.books = null;
-    this.words = null;
+    this.recentWords = null;
     firebaseService.on(UPDATE_BOOKS, this.onBooksUpdated.bind(this));
+    firebaseService.on(UPDATE_RECENT_WORDS, this.onRecentWordsUpdated.bind(this));
   }
 
   setDrawerOpen(open) {
@@ -54,8 +56,8 @@ class Store extends EventEmitter {
     firebaseService.updateBook(bookId, title, description);
   }
 
-  getBookPromise(bookId) {
-    return firebaseService.getBookPromise(bookId);
+  fetchBook(bookId) {
+    return firebaseService.fetchBook(bookId);
   }
 
   onBooksUpdated(books) {
@@ -67,9 +69,17 @@ class Store extends EventEmitter {
     return this.books;
   }
 
-  getWords() {
-    // return this.words;
-    return [];
+  addWord(bookId, word, answer, sentence) {
+    return firebaseService.addWord(bookId, word, answer, sentence);
+  }
+
+  onRecentWordsUpdated(recentWords) {
+    this.recentWords = recentWords;
+    this.emit(UPDATE_RECENT_WORDS);
+  }
+
+  getRecentWords() {
+    return this.recentWords;
   }
 }
 

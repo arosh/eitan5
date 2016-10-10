@@ -98,3 +98,7 @@ export default class WordTable extends React.Component {
     console.log(selectedRows);
   }
 }
+
+WordTable.propTypes = {
+  bookId: React.PropTypes.string,
+};

@@ -3,6 +3,8 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import store from '../Store';
+
 export default class WordEditor extends React.Component {
   constructor(props) {
     super(props);
@@ -21,7 +23,7 @@ export default class WordEditor extends React.Component {
             <TextField
               ref={ref => this.sentenceRef = ref}
               value={this.state.sentence}
-              onChange={e => this.setState({ sentence: e.target.value })}
+              onChange={this.handleSentenceChanged.bind(this)}
               floatingLabelText="例文"
               multiLine
               fullWidth
@@ -39,6 +41,7 @@ export default class WordEditor extends React.Component {
           <div className="col-md-5 col-sm-4 col-xs-12">
             <TextField
               value={this.state.word}
+              onChange={this.handleWordChanged.bind(this)}
               floatingLabelText="単語"
               fullWidth
             />
@@ -46,12 +49,18 @@ export default class WordEditor extends React.Component {
           <div className="col-md-5 col-sm-5 col-xs-12">
             <TextField
               value={this.state.answer}
+              onChange={this.handleAnswerChanged.bind(this)}
               floatingLabelText="答え"
               fullWidth
             />
           </div>
           <div className="col-md-2 col-sm-3 center-sm col-xs-12 end-xs">
-            <RaisedButton label="追加" primary />
+            <RaisedButton
+              label="追加"
+              onTouchTap={this.handleSaveClicked.bind(this)}
+              disable={() => !this.validate()}
+              primary
+            />
           </div>
         </div>
       </div>
@@ -68,4 +77,41 @@ export default class WordEditor extends React.Component {
       word: subString,
     });
   }
+
+  handleSentenceChanged(e) {
+    this.setState({
+      sentence: e.target.value,
+    });
+  }
+
+  handleWordChanged(e) {
+    this.setState({
+      word: e.target.value,
+    });
+  }
+
+  handleAnswerChanged(e) {
+    this.setState({
+      answer: e.target.value,
+    });
+  }
+
+  handleSaveClicked() {
+    const { bookId } = this.props;
+    const { word, answer, sentence } = this.state;
+    store.addWord(bookId, word, answer, sentence);
+    this.setState({
+      word: '',
+      answer: '',
+    });
+  }
+
+  validate() {
+    if (this.state.word === '') return false;
+    return true;
+  }
 }
+
+WordEditor.propTypes = {
+  bookId: React.PropTypes.string,
+};

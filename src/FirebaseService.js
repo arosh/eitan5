@@ -2,7 +2,11 @@ import EventEmitter from 'eventemitter3';
 import values from 'object.values';
 import * as firebase from 'firebase';
 
-import { UPDATE_LOGGED, UPDATE_BOOKS } from './EventTypes';
+import {
+  UPDATE_LOGGED,
+  UPDATE_BOOKS,
+  UPDATE_RECENT_WORDS,
+} from './EventTypes';
 import store from './Store';
 
 class FirebaseService extends EventEmitter {
@@ -37,15 +41,15 @@ class FirebaseService extends EventEmitter {
       this.emit(UPDATE_LOGGED);
 
       if (oldId !== null) {
-        firebase.database().ref(`/users/${oldId}/books`)
-          .off('value', this.handleBookUpdated.bind(this));
+        firebase.database().ref(`/users/${oldId}`)
+          .off('value', this.handleUserUpdated.bind(this));
       }
 
       if (newId !== null) {
-        firebase.database().ref(`/users/${newId}/books`)
-          .on('value', this.handleBookUpdated.bind(this));
+        firebase.database().ref(`/users/${newId}`)
+          .on('value', this.handleUserUpdated.bind(this));
       } else {
-        this.handleBookUpdated(null);
+        this.handleUserUpdated(null);
       }
     });
   }
@@ -86,28 +90,52 @@ class FirebaseService extends EventEmitter {
   addBook(title, description) {
     const database = firebase.database();
     const uid = this.getUID();
-    const key = database.ref('/books').push({
+    const bookId = database.ref('/books').push({
       uid,
       title,
       description,
     }).key;
-    database.ref(`/users/${uid}/books/${key}`).set({
+    database.ref(`/users/${uid}/books/${bookId}`).set({
       title,
       description,
-      bookId: key,
+      bookId,
     });
-    return key;
+    return bookId;
   }
 
-  getBookPromise(bookId) {
+  addWord(bookId, word, answer, sentence) {
+    const database = firebase.database();
+    const uid = this.getUID();
+    const wordId = database.ref(`/books/${bookId}/words`).push({
+      word,
+      answer,
+      sentence,
+    }).key;
+    database.ref(`/users/${uid}/recentWords`).push({
+      word,
+      answer,
+      sentence,
+      wordId,
+      bookId,
+    });
+    return wordId;
+  }
+
+  fetchBook(bookId) {
     return firebase.database().ref(`/books/${bookId}`).once('value');
   }
 
-  handleBookUpdated(snapshot) {
-    if (snapshot && snapshot.exists()) {
-      this.emit(UPDATE_BOOKS, values(snapshot.val()));
+  handleUserUpdated(snapshot) {
+    if (snapshot && snapshot.child('books').exists()) {
+      this.emit(UPDATE_BOOKS, values(snapshot.child('books').val()));
     } else {
       this.emit(UPDATE_BOOKS, []);
+    }
+
+    if (snapshot && snapshot.child('recentWords').exists()) {
+      this.emit(UPDATE_RECENT_WORDS, values(snapshot.child('recentWords').val()));
+    } else {
+      this.emit(UPDATE_RECENT_WORDS, []);
     }
   }
 

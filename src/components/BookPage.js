@@ -10,10 +10,14 @@ import store from '../Store';
 const BookPaneOn = props => (
   <div>
     <BookPanel {...props} />
-    <WordEditor />
-    <WordTable />
+    <WordEditor bookId={props.bookId} />
+    <WordTable bookId={props.bookId} />
   </div>
 );
+
+BookPaneOn.propTypes = {
+  bookId: React.PropTypes.string,
+};
 
 export default class BookPage extends React.Component {
   constructor(props) {
@@ -26,6 +30,7 @@ export default class BookPage extends React.Component {
       return <Loading />;
     }
     return (<BookPaneOn
+      bookId={this.props.params.bookId}
       title={this.state.bookTitle}
       description={this.state.bookDescription}
       onTitleChange={this.handleBookTitleChanged.bind(this)}
@@ -54,7 +59,7 @@ export default class BookPage extends React.Component {
   }
 
   onBookUpdated() {
-    store.getBookPromise(this.props.params.bookId).then((snapshot) => {
+    store.fetchBook(this.props.params.bookId).then((snapshot) => {
       const book = snapshot.val();
       this.setState({
         bookTitle: book.title,

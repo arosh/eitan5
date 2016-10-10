@@ -4,7 +4,7 @@ import BookList from './BookList';
 import WordList from './WordList';
 import Loading from './Loading';
 
-import { UPDATE_LOGGED, UPDATE_BOOKS } from '../EventTypes';
+import { UPDATE_LOGGED, UPDATE_BOOKS, UPDATE_RECENT_WORDS } from '../EventTypes';
 import firebaseService from '../FirebaseService';
 import store from '../Store';
 
@@ -35,20 +35,21 @@ export default class Home extends React.Component {
     this.state = {
       logged: firebaseService.isLogged(),
       books: store.getBooks(),
-      words: store.getWords(),
+      recentWords: store.getRecentWords(),
     };
     firebaseService.on(UPDATE_LOGGED, this.onLoggedUpdated.bind(this));
     store.on(UPDATE_BOOKS, this.onBooksUpdated.bind(this));
+    store.on(UPDATE_RECENT_WORDS, this.onRecentWordsUpdated.bind(this));
   }
 
   render() {
     if (!this.state.logged) {
       return <Anonymous />;
     }
-    if (this.state.books === null || this.state.words === null) {
+    if (this.state.books === null || this.state.recentWords === null) {
       return <Loading />;
     }
-    return <Logged books={this.state.books} words={this.state.words} />;
+    return <Logged books={this.state.books} words={this.state.recentWords} />;
   }
 
   onLoggedUpdated() {
@@ -61,6 +62,12 @@ export default class Home extends React.Component {
     const books = store.getBooks();
     this.setState({
       books,
+    });
+  }
+
+  onRecentWordsUpdated() {
+    this.setState({
+      recentWords: store.getRecentWords(),
     });
   }
 }
