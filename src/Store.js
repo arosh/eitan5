@@ -1,5 +1,10 @@
 import EventEmitter from 'eventemitter3';
-import { UPDATE_DRAWER_OPEN, UPDATE_BOOK_ADD_DIALOG_OPEN, UPDATE_SNACKBAR } from './EventTypes';
+import {
+  UPDATE_DRAWER_OPEN,
+  UPDATE_BOOK_ADD_DIALOG_OPEN,
+  UPDATE_SNACKBAR,
+  UPDATE_BOOKS,
+} from './EventTypes';
 import firebaseService from './FirebaseService';
 
 class Store extends EventEmitter {
@@ -8,8 +13,8 @@ class Store extends EventEmitter {
     this.drawerOpen = false;
     this.bookAddDialogOpen = false;
     this.snackbarMessage = '';
-    // this.bookTitle = 'The use of MMR, diversity-based reranking for reordering documents and producing summaries';
-    // this.bookDescription = 'Carbonell, J. and Goldstein, J., Proc. ACM SIGIR (1998)';
+    this.books = [];
+    firebaseService.on(UPDATE_BOOKS, this.onBooksUpdated.bind(this));
   }
 
   updateDrawerOpen(open) {
@@ -46,6 +51,15 @@ class Store extends EventEmitter {
 
   getBookPromise(bookId) {
     return firebaseService.getBookPromise(bookId);
+  }
+
+  onBooksUpdated(books) {
+    this.books = books;
+    this.emit(UPDATE_BOOKS);
+  }
+
+  getBooks() {
+    return this.books;
   }
 }
 

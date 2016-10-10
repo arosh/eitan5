@@ -1,7 +1,8 @@
 import EventEmitter from 'eventemitter3';
+import values from 'object.values';
 import * as firebase from 'firebase';
 
-import { UPDATE_LOGGED } from './EventTypes';
+import { UPDATE_LOGGED, UPDATE_BOOKS } from './EventTypes';
 import store from './Store';
 
 class FirebaseService extends EventEmitter {
@@ -26,21 +27,24 @@ class FirebaseService extends EventEmitter {
 
   setupAuthStateChanged() {
     firebase.auth().onAuthStateChanged((user) => {
-      let oldUid = null;
-      let newUid = null;
-      if (this.user) {
-        oldUid = this.user.uid;
-      }
-      if (user) {
-        newUid = user.uid;
-      }
-
-      if (oldUid === newUid) {
+      const oldId = this.user ? this.user.uid : null;
+      const newId = user ? user.uid : null;
+      if (oldId === newId) {
         return;
       }
 
       this.user = user;
       this.emit(UPDATE_LOGGED);
+
+      if (oldId !== null) {
+        firebase.database().ref(`/users/${oldId}/books`)
+          .off('value', this.handleBookAdd.bind(this));
+      }
+
+      if (newId !== null) {
+        firebase.database().ref(`/users/${newId}/books`)
+          .on('value', this.handleBookAdd.bind(this));
+      }
     });
   }
 
@@ -95,6 +99,10 @@ class FirebaseService extends EventEmitter {
 
   getBookPromise(bookId) {
     return firebase.database().ref(`/books/${bookId}`).once('value');
+  }
+
+  handleBookAdd(snapshot) {
+    this.emit(UPDATE_BOOKS, values(snapshot.val()));
   }
 }
 

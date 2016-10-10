@@ -7,13 +7,31 @@ import IconHome from 'material-ui/svg-icons/action/home';
 import IconAddCircle from 'material-ui/svg-icons/content/add-circle';
 
 import store from '../Store';
-import { UPDATE_DRAWER_OPEN } from '../EventTypes';
+import { UPDATE_DRAWER_OPEN, UPDATE_BOOKS } from '../EventTypes';
+
+class BookItems extends React.Component {
+  render() {
+    const bookItems = this.props.books.map(book =>
+      <MenuItem
+        key={book.bookId}
+        onTouchTap={() => this.props.handleBookClicked(book.bookId)}
+      >
+        {book.title}
+      </MenuItem>
+    );
+    return <div>{ bookItems }</div>;
+  }
+}
 
 export default class Drawer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { open: store.isDrawerOpen() };
+    this.state = {
+      open: store.isDrawerOpen(),
+      books: [],
+    };
     store.on(UPDATE_DRAWER_OPEN, this.onDrawerOpenUpdated.bind(this));
+    store.on(UPDATE_BOOKS, this.onBooksUpdated.bind(this));
   }
 
   render() {
@@ -36,7 +54,10 @@ export default class Drawer extends React.Component {
           文献追加
         </MenuItem>
         <Divider />
-        <MenuItem onTouchTap={() => this.handleBookClicked(114514)}>文献1</MenuItem>
+        <BookItems
+          books={this.state.books}
+          handleBookClicked={this.handleBookClicked.bind(this)}
+        />
       </MDrawer>
     );
   }
@@ -64,6 +85,13 @@ export default class Drawer extends React.Component {
     const open = store.isDrawerOpen();
     this.setState({
       open,
+    });
+  }
+
+  onBooksUpdated() {
+    const books = store.getBooks();
+    this.setState({
+      books,
     });
   }
 }

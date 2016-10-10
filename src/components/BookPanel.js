@@ -11,17 +11,17 @@ const BookPanel = ({ title, description, onTitleChange, onDescriptionChange }) =
       value={title}
       onChange={onTitleChange}
       floatingLabelText="文献タイトル"
+      rows={1}
       multiLine
       fullWidth
-      rows={1}
     />
     <TextField
       value={description}
       onChange={onDescriptionChange}
       floatingLabelText="説明"
+      rows={2}
       multiLine
       fullWidth
-      rows={2}
     />
     <div className="end-xs margin-top-1rem">
       <RaisedButton
