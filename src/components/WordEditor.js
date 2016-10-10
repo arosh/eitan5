@@ -12,6 +12,7 @@ export default class WordEditor extends React.Component {
       sentence: '',
       word: '',
       answer: '',
+      allowSubmittion: false,
     };
   }
 
@@ -58,7 +59,7 @@ export default class WordEditor extends React.Component {
             <RaisedButton
               label="追加"
               onTouchTap={this.handleSaveClicked.bind(this)}
-              disable={() => !this.validate()}
+              disabled={!this.state.allowSubmittion}
               primary
             />
           </div>
@@ -75,24 +76,32 @@ export default class WordEditor extends React.Component {
     const subString = this.state.sentence.substring(s, e);
     this.setState({
       word: subString,
+    }, () => {
+      this.validate();
     });
   }
 
   handleSentenceChanged(e) {
     this.setState({
       sentence: e.target.value,
+    }, () => {
+      this.validate();
     });
   }
 
   handleWordChanged(e) {
     this.setState({
       word: e.target.value,
+    }, () => {
+      this.validate();
     });
   }
 
   handleAnswerChanged(e) {
     this.setState({
       answer: e.target.value,
+    }, () => {
+      this.validate();
     });
   }
 
@@ -103,12 +112,21 @@ export default class WordEditor extends React.Component {
     this.setState({
       word: '',
       answer: '',
+    }, () => {
+      this.validate();
     });
   }
 
   validate() {
-    if (this.state.word === '') return false;
-    return true;
+    if (this.state.word === '') {
+      this.setState({
+        allowSubmittion: false,
+      });
+      return;
+    }
+    this.setState({
+      allowSubmittion: true,
+    });
   }
 }
 
