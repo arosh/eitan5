@@ -8,6 +8,16 @@ import store from '../Store';
 
 export default class BookList extends React.Component {
   render() {
+    const bookItems = this.props.books.map(book =>
+      <ListItem
+        key={book.bookId}
+        primaryText={book.title}
+        secondaryText={book.description}
+        onTouchTap={() => this.handleBookClicked(book.bookId)}
+        insetChildren
+      />
+    );
+
     return (
       <Card>
         <CardTitle title="文献一覧" />
@@ -17,21 +27,9 @@ export default class BookList extends React.Component {
             primaryText="文献追加"
             onTouchTap={this.handleBookAddClicked.bind(this)}
           />
-          <ListItem
-            insetChildren
-            primaryText="文献の名前"
-            secondaryText="文献の著者名やURLなど"
-          />
-          <ListItem
-            insetChildren
-            primaryText="文献の名前"
-            secondaryText="文献の著者名やURLなど"
-          />
-          <ListItem
-            insetChildren
-            primaryText="文献の名前"
-            secondaryText="文献の著者名やURLなど"
-          />
+          <div>
+            {bookItems}
+          </div>
         </List>
       </Card>
     );
@@ -40,4 +38,13 @@ export default class BookList extends React.Component {
   handleBookAddClicked() {
     store.setBookAddDialogOpen(true);
   }
+
+  handleBookClicked(bookId) {
+    store.setDrawerOpen(false);
+    this.context.router.transitionTo(`/books/${bookId}`);
+  }
 }
+
+BookList.contextTypes = {
+  router: React.PropTypes.object,
+};

@@ -38,16 +38,14 @@ class FirebaseService extends EventEmitter {
 
       if (oldId !== null) {
         firebase.database().ref(`/users/${oldId}/books`)
-          .off('value', this.handleBookAdd.bind(this));
-      } else {
-        this.handleBookAdd(null);
+          .off('value', this.handleBookUpdated.bind(this));
       }
 
       if (newId !== null) {
         firebase.database().ref(`/users/${newId}/books`)
-          .on('value', this.handleBookAdd.bind(this));
+          .on('value', this.handleBookUpdated.bind(this));
       } else {
-        this.handleBookAdd(null);
+        this.handleBookUpdated(null);
       }
     });
   }
@@ -105,7 +103,7 @@ class FirebaseService extends EventEmitter {
     return firebase.database().ref(`/books/${bookId}`).once('value');
   }
 
-  handleBookAdd(snapshot) {
+  handleBookUpdated(snapshot) {
     if (snapshot && snapshot.exists()) {
       this.emit(UPDATE_BOOKS, values(snapshot.val()));
     } else {

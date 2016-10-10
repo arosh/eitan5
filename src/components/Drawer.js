@@ -28,7 +28,7 @@ export default class Drawer extends React.Component {
     super(props);
     this.state = {
       open: store.isDrawerOpen(),
-      books: [],
+      books: store.getBooks() || [],
     };
     store.on(UPDATE_DRAWER_OPEN, this.onDrawerOpenUpdated.bind(this));
     store.on(UPDATE_BOOKS, this.onBooksUpdated.bind(this));

@@ -13,7 +13,8 @@ class Store extends EventEmitter {
     this.drawerOpen = false;
     this.bookAddDialogOpen = false;
     this.snackbarMessage = '';
-    this.books = [];
+    this.books = null;
+    this.words = null;
     firebaseService.on(UPDATE_BOOKS, this.onBooksUpdated.bind(this));
   }
 
@@ -64,6 +65,11 @@ class Store extends EventEmitter {
 
   getBooks() {
     return this.books;
+  }
+
+  getWords() {
+    // return this.words;
+    return [];
   }
 }
 
