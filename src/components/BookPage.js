@@ -6,24 +6,24 @@ import WordTable from './WordTable';
 import Loading from './Loading';
 
 import store from '../Store';
+import { UPDATE_WORDS } from '../EventTypes';
 
 const BookPaneOn = props => (
   <div>
     <BookPanel {...props} />
-    <WordEditor bookId={props.bookId} />
-    <WordTable bookId={props.bookId} />
+    <WordEditor {...props} />
+    <WordTable {...props} />
   </div>
 );
-
-BookPaneOn.propTypes = {
-  bookId: React.PropTypes.string,
-};
 
 export default class BookPage extends React.Component {
   constructor(props) {
     super(props);
     const bookId = this.props.params.bookId;
     this.fetchBook(bookId);
+    store.on(UPDATE_WORDS, () => {
+      this.fetchBook(bookId);
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -44,6 +44,7 @@ export default class BookPage extends React.Component {
       onTitleChange={this.handleBookTitleChanged.bind(this)}
       onDescriptionChange={this.handleBookDescriptionChanged.bind(this)}
       onSaveBookClick={this.handleSaveBookClicked.bind(this)}
+      words={this.state.words}
     />);
   }
 
@@ -67,11 +68,11 @@ export default class BookPage extends React.Component {
   }
 
   fetchBook(bookId) {
-    store.fetchBook(bookId).then((snapshot) => {
-      const book = snapshot.val();
+    store.fetchBook(bookId, (book) => {
       this.setState({
         bookTitle: book.title,
         bookDescription: book.description,
+        words: book.words,
       });
     });
   }

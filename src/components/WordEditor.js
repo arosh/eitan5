@@ -18,7 +18,7 @@ export default class WordEditor extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="margin-top-1rem">
         <div className="row middle-xs">
           <div className="col-md-10 col-sm-9 col-xs-12">
             <TextField

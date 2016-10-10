@@ -6,6 +6,7 @@ import {
   UPDATE_LOGGED,
   UPDATE_BOOKS,
   UPDATE_RECENT_WORDS,
+  UPDATE_WORDS,
 } from './EventTypes';
 import store from './Store';
 
@@ -93,7 +94,8 @@ class FirebaseService extends EventEmitter {
       uid,
       title,
       description,
-    }).then((ref) => {
+    })
+    .then((ref) => {
       const bookId = ref.key;
       firebase.database().ref(`/users/${uid}/books/${bookId}`).set({
         title,
@@ -102,7 +104,8 @@ class FirebaseService extends EventEmitter {
       }).then(() => {
         onSuccess(bookId);
       });
-    }).catch((error) => {
+    })
+    .catch((error) => {
       store.setSnackbarMessage(error.message);
     });
   }
@@ -113,18 +116,21 @@ class FirebaseService extends EventEmitter {
       word,
       answer,
       sentence,
-    }).then((ref) => {
+    })
+    .then((ref) => {
       const wordId = ref.key;
-      firebase.database().ref(`/users/${uid}/recentWords`).push({
+      firebase.database().ref(`/users/${uid}/recentWords/${wordId}`).set({
         word,
         answer,
         sentence,
-        wordId,
         bookId,
+        wordId,
       }).then(() => {
         onSuccess(wordId);
+        this.emit(UPDATE_WORDS);
       });
-    }).catch((error) => {
+    })
+    .catch((error) => {
       store.setSnackbarMessage(error.message);
     });
   }
@@ -138,14 +144,30 @@ class FirebaseService extends EventEmitter {
             store.setSnackbarMessage('文献を削除しました');
             onSuccess();
           });
-      }).catch((error) => {
+      })
+      .catch((error) => {
         store.setSnackbarMessage(error.message);
       });
   }
 
-  fetchBook(bookId) {
-    return firebase.database().ref(`/books/${bookId}`)
-      .once('value').catch((error) => {
+  fetchBook(bookId, onSuccess) {
+    return firebase.database().ref(`/books/${bookId}`).once('value')
+      .then((snapshot) => {
+        const newData = snapshot.val();
+        if (!newData.words) {
+          newData.words = [];
+        }
+        const words = Object.keys(newData.words).map(key =>
+          Object.assign({ wordId: key }, newData.words[key]));
+        const retval = {
+          description: newData.description,
+          title: newData.title,
+          uid: newData.uid,
+          words,
+        };
+        onSuccess(retval);
+      })
+      .catch((error) => {
         store.setSnackbarMessage(error.message);
       });
   }
@@ -171,11 +193,34 @@ class FirebaseService extends EventEmitter {
     updates[`/books/${bookId}/description`] = description;
     updates[`/users/${uid}/books/${bookId}/title`] = title;
     updates[`/users/${uid}/books/${bookId}/description`] = description;
-    firebase.database().ref().update(updates).then(() => {
+    firebase.database().ref().update(updates)
+    .then(() => {
       store.setSnackbarMessage('変更を保存しました');
-    }).catch((error) => {
+    })
+    .catch((error) => {
       store.setSnackbarMessage(error.message);
     });
+  }
+
+  deleteWords(bookId, wordIds) {
+    const uid = this.getUID();
+    const promise = [];
+    for (const wordId of wordIds) {
+      promise.push(firebase.database()
+        .ref(`/books/${bookId}/words/${wordId}`).remove()
+        .catch((error) => {
+          store.setSnackbarMessage(error.message);
+        }));
+      promise.push(firebase.database()
+        .ref(`/users/${uid}/recentWords/${wordId}`).remove()
+        .catch((error) => {
+          store.setSnackbarMessage(error.message);
+        }));
+    }
+    firebase.Promise.all(promise)
+      .then(() => {
+        this.emit(UPDATE_WORDS);
+      });
   }
 }
 

@@ -3,6 +3,7 @@ import {
   UPDATE_DRAWER_OPEN,
   UPDATE_BOOK_ADD_DIALOG_OPEN,
   UPDATE_SNACKBAR,
+  UPDATE_WORDS,
   UPDATE_BOOKS,
   UPDATE_RECENT_WORDS,
 } from './EventTypes';
@@ -18,6 +19,7 @@ class Store extends EventEmitter {
     this.recentWords = null;
     firebaseService.on(UPDATE_BOOKS, this.onBooksUpdated.bind(this));
     firebaseService.on(UPDATE_RECENT_WORDS, this.onRecentWordsUpdated.bind(this));
+    firebaseService.on(UPDATE_WORDS, this.onWordsUpdated.bind(this));
   }
 
   setDrawerOpen(open) {
@@ -59,8 +61,8 @@ class Store extends EventEmitter {
     firebaseService.deleteBook(bookId, onSuccess);
   }
 
-  fetchBook(bookId) {
-    return firebaseService.fetchBook(bookId);
+  fetchBook(bookId, onSuccess) {
+    firebaseService.fetchBook(bookId, onSuccess);
   }
 
   onBooksUpdated(books) {
@@ -76,6 +78,10 @@ class Store extends EventEmitter {
     firebaseService.createWord(bookId, word, answer, sentence, onSuccess);
   }
 
+  deleteWords(bookId, wordIds) {
+    firebaseService.deleteWords(bookId, wordIds);
+  }
+
   onRecentWordsUpdated(recentWords) {
     this.recentWords = recentWords;
     this.emit(UPDATE_RECENT_WORDS);
@@ -83,6 +89,10 @@ class Store extends EventEmitter {
 
   getRecentWords() {
     return this.recentWords;
+  }
+
+  onWordsUpdated() {
+    this.emit(UPDATE_WORDS);
   }
 }
 
