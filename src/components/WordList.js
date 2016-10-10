@@ -9,15 +9,25 @@ class WordItems extends React.Component {
       return <ListItem primaryText="登録された単語はありません" />;
     }
 
-    return this.props.words.map(word => (
+    const items = this.props.words.map(word => (
       <ListItem
         key={word.wordId}
         primaryText={word.word}
         secondaryText={word.answer}
+        onTouchTap={() => this.handleWordItemClicked(word.bookId)}
       />
     ));
+    return <div>{items}</div>;
+  }
+
+  handleWordItemClicked(bookId) {
+    this.context.router.transitionTo(`/books/${bookId}`);
   }
 }
+
+WordItems.contextTypes = {
+  router: React.PropTypes.object,
+};
 
 export default class WordList extends React.Component {
   render() {

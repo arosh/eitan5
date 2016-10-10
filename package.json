@@ -4,7 +4,8 @@
   "private": true,
   "devDependencies": {
     "firebase-tools": "^3.0.8",
-    "react-scripts": "0.6.1"
+    "react-scripts": "0.6.1",
+    "typings": "^1.4.0"
   },
   "dependencies": {
     "eventemitter3": "^2.0.2",

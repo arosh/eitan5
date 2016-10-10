@@ -24,13 +24,14 @@ export default class BookAddDialog extends React.Component {
 
   requestSave() {
     const { title, description } = this.state;
-    const bookId = store.addBook(title, description);
-    this.requestClose();
-    this.clear();
-    this.context.router.transitionTo(`/books/${bookId}`);
+    store.addBook(title, description, (bookId) => {
+      this.requestClose();
+      this.clearForm();
+      this.context.router.transitionTo(`/books/${bookId}`);
+    });
   }
 
-  clear() {
+  clearForm() {
     this.setState({
       title: '',
       description: '',

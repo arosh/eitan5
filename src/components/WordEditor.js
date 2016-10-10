@@ -108,12 +108,13 @@ export default class WordEditor extends React.Component {
   handleSaveClicked() {
     const { bookId } = this.props;
     const { word, answer, sentence } = this.state;
-    store.addWord(bookId, word, answer, sentence);
-    this.setState({
-      word: '',
-      answer: '',
-    }, () => {
-      this.validate();
+    store.addWord(bookId, word, answer, sentence, () => {
+      this.setState({
+        word: '',
+        answer: '',
+      }, () => {
+        this.validate();
+      });
     });
   }
 

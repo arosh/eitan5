@@ -47,9 +47,8 @@ class Store extends EventEmitter {
     return this.snackbarMessage;
   }
 
-  addBook(title, description) {
-    const bookId = firebaseService.addBook(title, description);
-    return bookId;
+  addBook(title, description, onSuccess) {
+    firebaseService.addBook(title, description, onSuccess);
   }
 
   updateBook(bookId, title, description) {
@@ -69,8 +68,8 @@ class Store extends EventEmitter {
     return this.books;
   }
 
-  addWord(bookId, word, answer, sentence) {
-    return firebaseService.addWord(bookId, word, answer, sentence);
+  addWord(bookId, word, answer, sentence, onSuccess) {
+    firebaseService.addWord(bookId, word, answer, sentence, onSuccess);
   }
 
   onRecentWordsUpdated(recentWords) {

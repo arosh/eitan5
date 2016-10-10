@@ -1,0 +1,6 @@
+{
+  "globalDependencies": {
+    "firebase": "registry:dt/firebase#2.4.1+20160412125105",
+    "react": "registry:dt/react#0.14.0+20161008064207"
+  }
+}

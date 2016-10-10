@@ -87,42 +87,53 @@ class FirebaseService extends EventEmitter {
     return this.user.uid;
   }
 
-  addBook(title, description) {
-    const database = firebase.database();
+  addBook(title, description, onSuccess) {
     const uid = this.getUID();
-    const bookId = database.ref('/books').push({
+    firebase.database().ref('/books').push({
       uid,
       title,
       description,
-    }).key;
-    database.ref(`/users/${uid}/books/${bookId}`).set({
-      title,
-      description,
-      bookId,
+    }).then((ref) => {
+      const bookId = ref.key;
+      firebase.database().ref(`/users/${uid}/books/${bookId}`).set({
+        title,
+        description,
+        bookId,
+      }).then(() => {
+        onSuccess(bookId);
+      });
+    }).catch((error) => {
+      store.setSnackbarMessage(error.message);
     });
-    return bookId;
   }
 
-  addWord(bookId, word, answer, sentence) {
-    const database = firebase.database();
+  addWord(bookId, word, answer, sentence, onSuccess) {
     const uid = this.getUID();
-    const wordId = database.ref(`/books/${bookId}/words`).push({
+    firebase.database().ref(`/books/${bookId}/words`).push({
       word,
       answer,
       sentence,
-    }).key;
-    database.ref(`/users/${uid}/recentWords`).push({
-      word,
-      answer,
-      sentence,
-      wordId,
-      bookId,
+    }).then((ref) => {
+      const wordId = ref.key;
+      firebase.database().ref(`/users/${uid}/recentWords`).push({
+        word,
+        answer,
+        sentence,
+        wordId,
+        bookId,
+      }).then(() => {
+        onSuccess(wordId);
+      });
+    }).catch((error) => {
+      store.setSnackbarMessage(error.message);
     });
-    return wordId;
   }
 
   fetchBook(bookId) {
-    return firebase.database().ref(`/books/${bookId}`).once('value');
+    return firebase.database().ref(`/books/${bookId}`)
+      .once('value').catch((error) => {
+        store.setSnackbarMessage(error.message);
+      });
   }
 
   handleUserUpdated(snapshot) {
@@ -148,6 +159,8 @@ class FirebaseService extends EventEmitter {
     updates[`/users/${uid}/books/${bookId}/description`] = description;
     firebase.database().ref().update(updates).then(() => {
       store.setSnackbarMessage('変更を保存しました');
+    }).catch((error) => {
+      store.setSnackbarMessage(error.message);
     });
   }
 }
