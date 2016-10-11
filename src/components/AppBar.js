@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Link from 'react-router/Link';
 
 import MAppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
@@ -89,8 +90,9 @@ const styles = {
     top: 0,
     position: 'fixed',
   },
-  title: {
-    cursor: 'pointer',
+  link: {
+    textDecoration: 'inherit',
+    color: 'inherit',
   },
 };
 
@@ -116,15 +118,10 @@ export default class AppBar extends React.Component {
     });
   }
 
-  transitionToHome() {
-    this.context.router.transitionTo('/');
-  }
-
   render() {
     return (
       <MAppBar
-        title={<span style={styles.title}>eitan5</span>}
-        onTitleTouchTap={this.transitionToHome.bind(this)}
+        title={<Link to="/" style={styles.link}>eitan5</Link>}
         onLeftIconButtonTouchTap={() => store.setDrawerOpen(true)}
         iconElementRight={this.state.logged ? <Logged /> : <Login />}
         style={styles.appbar}
@@ -132,7 +129,3 @@ export default class AppBar extends React.Component {
     );
   }
 }
-
-AppBar.contextTypes = {
-  router: React.PropTypes.object,
-};
