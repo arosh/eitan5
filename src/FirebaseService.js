@@ -63,11 +63,12 @@ class FirebaseService extends EventEmitter {
     // https://firebase.google.com/docs/auth/web/google-signin
     const provider = new firebase.auth.GoogleAuthProvider();
     // eslint-disable-next-line no-unused-vars
-    firebase.auth().signInWithPopup(provider).then((result) => {
-      store.setSnackbarMessage('ログインしました');
-    }).catch((error) => {
-      store.setSnackbarMessage(error.message);
-    });
+    firebase.auth().signInWithPopup(provider)
+      .then(() => {
+        store.setSnackbarMessage('ログインしました');
+      }, (error) => {
+        store.setSnackbarMessage(error.message);
+      });
   }
 
   login(providerName) {
@@ -77,11 +78,12 @@ class FirebaseService extends EventEmitter {
   }
 
   logout() {
-    firebase.auth().signOut().then(() => {
-      store.setSnackbarMessage('ログアウトしました');
-    }, (error) => {
-      store.setSnackbarMessage(error.message);
-    });
+    firebase.auth().signOut()
+      .then(() => {
+        store.setSnackbarMessage('ログアウトしました');
+      }, (error) => {
+        store.setSnackbarMessage(error.message);
+      });
   }
 
   getUID() {
@@ -90,62 +92,49 @@ class FirebaseService extends EventEmitter {
 
   createBook(title, description, onSuccess) {
     const uid = this.getUID();
-    firebase.database().ref('/books').push({
-      uid,
-      title,
-      description,
-    })
-    .then((ref) => {
-      const bookId = ref.key;
-      firebase.database().ref(`/users/${uid}/books/${bookId}`).set({
-        title,
-        description,
-        bookId,
-      }).then(() => {
+    let bookId = null;
+    firebase.database().ref('/books')
+      .push({ uid, title, description })
+      .then((ref) => {
+        bookId = ref.key;
+        return firebase.database().ref(`/users/${uid}/books/${bookId}`)
+          .set({ title, description, bookId });
+      })
+      .then(() => {
         onSuccess(bookId);
+      }, (error) => {
+        store.setSnackbarMessage(error.message);
       });
-    })
-    .catch((error) => {
-      store.setSnackbarMessage(error.message);
-    });
   }
 
   createWord(bookId, word, answer, sentence, onSuccess) {
     const uid = this.getUID();
-    firebase.database().ref(`/books/${bookId}/words`).push({
-      word,
-      answer,
-      sentence,
-    })
-    .then((ref) => {
-      const wordId = ref.key;
-      firebase.database().ref(`/users/${uid}/recentWords/${wordId}`).set({
-        word,
-        answer,
-        sentence,
-        bookId,
-        wordId,
-      }).then(() => {
+    let wordId = null;
+    firebase.database().ref(`/books/${bookId}/words`)
+      .push({ word, answer, sentence })
+      .then((ref) => {
+        wordId = ref.key;
+        return firebase.database().ref(`/users/${uid}/recentWords/${wordId}`)
+          .set({ word, answer, sentence, bookId, wordId });
+      })
+      .then(() => {
         onSuccess(wordId);
         this.emit(UPDATE_WORDS);
+      }, (error) => {
+        store.setSnackbarMessage(error.message);
       });
-    })
-    .catch((error) => {
-      store.setSnackbarMessage(error.message);
-    });
   }
 
   deleteBook(bookId, onSuccess) {
     const uid = this.getUID();
     firebase.database().ref(`/books/${bookId}`).remove()
       .then(() => {
-        return firebase.database().ref(`/users/${uid}/books/${bookId}`).remove()
-          .then(() => {
-            store.setSnackbarMessage('文献を削除しました');
-            onSuccess();
-          });
+        return firebase.database().ref(`/users/${uid}/books/${bookId}`).remove();
       })
-      .catch((error) => {
+      .then(() => {
+        store.setSnackbarMessage('文献を削除しました');
+        onSuccess();
+      }, (error) => {
         store.setSnackbarMessage(error.message);
       });
   }
@@ -159,15 +148,16 @@ class FirebaseService extends EventEmitter {
         }
         const words = Object.keys(newData.words).map(key =>
           Object.assign({ wordId: key }, newData.words[key]));
-        const retval = {
+        return {
           description: newData.description,
           title: newData.title,
           uid: newData.uid,
           words,
         };
-        onSuccess(retval);
       })
-      .catch((error) => {
+      .then((newData) => {
+        onSuccess(newData);
+      }, (error) => {
         store.setSnackbarMessage(error.message);
       });
   }
@@ -194,12 +184,11 @@ class FirebaseService extends EventEmitter {
     updates[`/users/${uid}/books/${bookId}/title`] = title;
     updates[`/users/${uid}/books/${bookId}/description`] = description;
     firebase.database().ref().update(updates)
-    .then(() => {
-      store.setSnackbarMessage('変更を保存しました');
-    })
-    .catch((error) => {
-      store.setSnackbarMessage(error.message);
-    });
+      .then(() => {
+        store.setSnackbarMessage('変更を保存しました');
+      }, (error) => {
+        store.setSnackbarMessage(error.message);
+      });
   }
 
   deleteWords(bookId, wordIds) {
@@ -207,19 +196,15 @@ class FirebaseService extends EventEmitter {
     const promise = [];
     for (const wordId of wordIds) {
       promise.push(firebase.database()
-        .ref(`/books/${bookId}/words/${wordId}`).remove()
-        .catch((error) => {
-          store.setSnackbarMessage(error.message);
-        }));
+        .ref(`/books/${bookId}/words/${wordId}`).remove());
       promise.push(firebase.database()
-        .ref(`/users/${uid}/recentWords/${wordId}`).remove()
-        .catch((error) => {
-          store.setSnackbarMessage(error.message);
-        }));
+        .ref(`/users/${uid}/recentWords/${wordId}`).remove());
     }
     firebase.Promise.all(promise)
       .then(() => {
         this.emit(UPDATE_WORDS);
+      }, (error) => {
+        store.setSnackbarMessage(error.message);
       });
   }
 }
