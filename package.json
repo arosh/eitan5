@@ -36,8 +36,7 @@
       "react/jsx-filename-extension": "off",
       "react/jsx-no-bind": "off",
       "react/no-multi-comp": "off",
-      "react/prefer-stateless-function": "off",
-      "react/sort-comp": "off"
+      "react/prefer-stateless-function": "off"
     }
   }
 }
