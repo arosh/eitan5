@@ -15,7 +15,14 @@ export default class BookAddDialog extends React.Component {
       title: '',
       description: '',
     };
-    store.on(UPDATE_BOOK_ADD_DIALOG_OPEN, this.onOpenUpdated.bind(this));
+  }
+
+  componentDidMount() {
+    store.on(UPDATE_BOOK_ADD_DIALOG_OPEN, this.onOpenUpdated, this);
+  }
+
+  componentWillUnmount() {
+    store.off(UPDATE_BOOK_ADD_DIALOG_OPEN, this.onOpenUpdated, this);
   }
 
   onOpenUpdated() {

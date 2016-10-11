@@ -42,9 +42,18 @@ export default class Drawer extends React.Component {
       books: store.getBooks() || [],
       logged: false,
     };
-    store.on(UPDATE_DRAWER_OPEN, this.onDrawerOpenUpdated.bind(this));
-    store.on(UPDATE_BOOKS, this.onBooksUpdated.bind(this));
-    firebaseService.on(UPDATE_LOGGED, this.onLoggedUpdated.bind(this));
+  }
+
+  componentDidMount() {
+    store.on(UPDATE_DRAWER_OPEN, this.onDrawerOpenUpdated, this);
+    store.on(UPDATE_BOOKS, this.onBooksUpdated, this);
+    firebaseService.on(UPDATE_LOGGED, this.onLoggedUpdated, this);
+  }
+
+  componentWillUnmount() {
+    store.off(UPDATE_DRAWER_OPEN, this.onDrawerOpenUpdated, this);
+    store.off(UPDATE_BOOKS, this.onBooksUpdated, this);
+    firebaseService.off(UPDATE_LOGGED, this.onLoggedUpdated, this);
   }
 
   onDrawerOpenUpdated() {

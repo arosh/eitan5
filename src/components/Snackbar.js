@@ -12,7 +12,14 @@ export default class Snackbar extends React.Component {
       open: false,
       message: '',
     };
-    store.on(UPDATE_SNACKBAR, this.onMessageUpdated.bind(this));
+  }
+
+  componentDidMount() {
+    store.on(UPDATE_SNACKBAR, this.onMessageUpdated, this);
+  }
+
+  componentWillUnmount() {
+    store.off(UPDATE_SNACKBAR, this.onMessageUpdated, this);
   }
 
   onMessageUpdated() {

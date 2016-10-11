@@ -100,7 +100,14 @@ export default class AppBar extends React.Component {
     this.state = {
       logged: firebaseService.isLogged(),
     };
-    firebaseService.on(UPDATE_LOGGED, this.onLoggedUpdated.bind(this));
+  }
+
+  componentDidMount() {
+    firebaseService.on(UPDATE_LOGGED, this.onLoggedUpdated, this);
+  }
+
+  componentWillUnmount() {
+    firebaseService.off(UPDATE_LOGGED, this.onLoggedUpdated, this);
   }
 
   onLoggedUpdated() {

@@ -42,9 +42,18 @@ export default class Home extends React.Component {
       books: store.getBooks(),
       recentWords: store.getRecentWords(),
     };
-    firebaseService.on(UPDATE_LOGGED, this.onLoggedUpdated.bind(this));
-    store.on(UPDATE_BOOKS, this.onBooksUpdated.bind(this));
-    store.on(UPDATE_RECENT_WORDS, this.onRecentWordsUpdated.bind(this));
+  }
+
+  componentDidMount() {
+    store.on(UPDATE_BOOKS, this.onBooksUpdated, this);
+    store.on(UPDATE_RECENT_WORDS, this.onRecentWordsUpdated, this);
+    firebaseService.on(UPDATE_LOGGED, this.onLoggedUpdated, this);
+  }
+
+  componentWillUnmount() {
+    store.off(UPDATE_BOOKS, this.onBooksUpdated, this);
+    store.off(UPDATE_RECENT_WORDS, this.onRecentWordsUpdated, this);
+    firebaseService.off(UPDATE_LOGGED, this.onLoggedUpdated, this);
   }
 
   onLoggedUpdated() {

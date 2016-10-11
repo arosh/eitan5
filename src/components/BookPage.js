@@ -21,9 +21,10 @@ export default class BookPage extends React.Component {
     super(props);
     const bookId = this.props.params.bookId;
     this.fetchBook(bookId);
-    store.on(UPDATE_WORDS, () => {
-      this.fetchBook(bookId);
-    });
+  }
+
+  componentDidMount() {
+    store.on(UPDATE_WORDS, this.onBookUpdated, this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -31,6 +32,14 @@ export default class BookPage extends React.Component {
     if (this.props.params.bookId !== nextBookId) {
       this.fetchBook(nextBookId);
     }
+  }
+
+  componentWillUnmount() {
+    store.off(UPDATE_WORDS, this.onBookUpdated, this);
+  }
+
+  onBookUpdated() {
+    this.fetchBook(this.props.params.bookId);
   }
 
   handleTitleChanged(e) {
