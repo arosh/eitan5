@@ -14,12 +14,13 @@ export default class BookAddDialog extends React.Component {
       open: false,
       title: '',
       description: '',
-      allowSubmittion: false,
     };
     store.on(UPDATE_BOOK_ADD_DIALOG_OPEN, this.onOpenUpdate.bind(this));
   }
 
   render() {
+    const allowSubmittion = this.validate();
+
     const actions = [
       <FlatButton
         label="キャンセル"
@@ -28,7 +29,7 @@ export default class BookAddDialog extends React.Component {
       <FlatButton
         label="追加"
         onTouchTap={this.requestSave.bind(this)}
-        disabled={!this.state.allowSubmittion}
+        disabled={!allowSubmittion}
         primary
       />,
     ];
@@ -79,8 +80,6 @@ export default class BookAddDialog extends React.Component {
     this.setState({
       title: '',
       description: '',
-    }, () => {
-      this.validate();
     });
   }
 
@@ -88,37 +87,26 @@ export default class BookAddDialog extends React.Component {
     const open = store.isBookAddDialogOpen();
     this.setState({
       open,
-    }, () => {
-      this.validate();
     });
   }
 
   handleTitleChanged(e) {
     this.setState({
       title: e.target.value,
-    }, () => {
-      this.validate();
     });
   }
 
   handleDescriptionChanged(e) {
     this.setState({
       description: e.target.value,
-    }, () => {
-      this.validate();
     });
   }
 
   validate() {
-    if (this.state.title.length === 0) {
-      this.setState({
-        allowSubmittion: false,
-      });
-      return;
+    if (this.state.title === '') {
+      return false;
     }
-    this.setState({
-      allowSubmittion: true,
-    });
+    return true;
   }
 }
 
