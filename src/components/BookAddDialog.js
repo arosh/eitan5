@@ -71,6 +71,9 @@ export default class BookAddDialog extends React.Component {
     return true;
   }
 
+  // Dialogの中でTextFieldを使うと問題が出る
+  // http://qiita.com/koizuss@github/items/ddd656cbafd888f179d6
+  // https://github.com/callemall/material-ui/issues/3394
   render() {
     const allowSubmittion = this.validate();
 
@@ -98,7 +101,7 @@ export default class BookAddDialog extends React.Component {
       >
         <TextField
           floatingLabelText="文献タイトル（必須）"
-          value={this.state.title}
+          defaultValue={this.state.title || null}
           onChange={this.handleTitleChanged.bind(this)}
           rows={1}
           fullWidth
@@ -106,7 +109,7 @@ export default class BookAddDialog extends React.Component {
         />
         <TextField
           floatingLabelText="説明"
-          value={this.state.description}
+          defaultValue={this.state.description || null}
           onChange={this.handleDescriptionChanged.bind(this)}
           rows={2}
           fullWidth
