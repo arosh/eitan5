@@ -1,4 +1,4 @@
-import EventEmitter from 'eventemitter3';
+import { EventEmitter } from 'eventemitter3';
 import {
   UPDATE_DRAWER_OPEN,
   UPDATE_BOOK_ADD_DIALOG_OPEN,
