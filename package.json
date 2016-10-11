@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "eslint": "^3.7.1",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.4.1",
     "firebase-tools": "^3.0.8",
     "react-scripts": "0.6.1",
     "typings": "^1.4.0"
@@ -23,6 +28,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "deploy": "npm run build && firebase deploy",
+    "fix": "eslint --fix src/**/*.js || true",
     "postinstall": "typings install"
   },
   "eslintConfig": {
