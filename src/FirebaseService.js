@@ -28,10 +28,12 @@ class FirebaseService extends EventEmitter {
       messagingSenderId: '864017556445',
     };
     firebase.initializeApp(config);
+    this.auth = firebase.auth();
+    this.database = firebase.database();
   }
 
   setupAuthStateChanged() {
-    firebase.auth().onAuthStateChanged((user) => {
+    this.auth.onAuthStateChanged((user) => {
       const oldId = this.user ? this.user.uid : null;
       const newId = user ? user.uid : null;
       if (oldId === newId) {
@@ -63,7 +65,7 @@ class FirebaseService extends EventEmitter {
     // https://firebase.google.com/docs/auth/web/google-signin
     const provider = new firebase.auth.GoogleAuthProvider();
     // eslint-disable-next-line no-unused-vars
-    firebase.auth().signInWithPopup(provider)
+    this.auth.signInWithPopup(provider)
       .then(() => {
         store.setSnackbarMessage('ログインしました');
       }, (error) => {
@@ -78,7 +80,7 @@ class FirebaseService extends EventEmitter {
   }
 
   logout() {
-    firebase.auth().signOut()
+    this.auth.signOut()
       .then(() => {
         store.setSnackbarMessage('ログアウトしました');
       }, (error) => {
@@ -93,7 +95,7 @@ class FirebaseService extends EventEmitter {
   createBook(title, description, onSuccess) {
     const uid = this.getUID();
     let bookId = null;
-    firebase.database().ref('/books')
+    this.database.ref('/books')
       .push({ uid, title, description })
       .then((ref) => {
         bookId = ref.key;
@@ -111,11 +113,11 @@ class FirebaseService extends EventEmitter {
   createWord(bookId, word, answer, sentence, onSuccess) {
     const uid = this.getUID();
     let wordId = null;
-    firebase.database().ref(`/books/${bookId}/words`)
+    this.database.ref(`/books/${bookId}/words`)
       .push({ word, answer, sentence })
       .then((ref) => {
         wordId = ref.key;
-        return firebase.database().ref(`/users/${uid}/recentWords/${wordId}`)
+        return this.database.ref(`/users/${uid}/recentWords/${wordId}`)
           .set({ word, answer, sentence, bookId, wordId });
       })
       .then(() => {
@@ -134,9 +136,9 @@ class FirebaseService extends EventEmitter {
         return;
       }
       const uid = this.getUID();
-      firebase.database().ref(`/books/${bookId}`).remove()
+      this.database.ref(`/books/${bookId}`).remove()
         .then(() => {
-          return firebase.database().ref(`/users/${uid}/books/${bookId}`).remove();
+          return this.database.ref(`/users/${uid}/books/${bookId}`).remove();
         })
         .then(() => {
           store.setSnackbarMessage(`文献「${data.title}」を削除しました`);
@@ -150,7 +152,7 @@ class FirebaseService extends EventEmitter {
   }
 
   fetchBook(bookId, onSuccess) {
-    firebase.database().ref(`/books/${bookId}`).once('value')
+    this.database.ref(`/books/${bookId}`).once('value')
       .then((snapshot) => {
         const newData = snapshot.val();
         if (!newData.words) {
@@ -193,7 +195,7 @@ class FirebaseService extends EventEmitter {
     updates[`/books/${bookId}/description`] = description;
     updates[`/users/${uid}/books/${bookId}/title`] = title;
     updates[`/users/${uid}/books/${bookId}/description`] = description;
-    firebase.database().ref().update(updates)
+    this.database.ref().update(updates)
       .then(() => {
         store.setSnackbarMessage('変更を保存しました');
       }, (error) => {
@@ -205,9 +207,9 @@ class FirebaseService extends EventEmitter {
     const uid = this.getUID();
     const promise = [];
     for (const wordId of wordIds) {
-      promise.push(firebase.database()
+      promise.push(this.database
         .ref(`/books/${bookId}/words/${wordId}`).remove());
-      promise.push(firebase.database()
+      promise.push(this.database
         .ref(`/users/${uid}/recentWords/${wordId}`).remove());
     }
     firebase.Promise.all(promise)
