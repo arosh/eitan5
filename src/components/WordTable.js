@@ -23,12 +23,20 @@ export default class WordTable extends React.Component {
     });
   }
 
+  deleteSelectedRows() {
+    if (confirm('消去してもよろしいですか？')) {
+      const wordIds = this.state.selectedRows
+        .map(index => this.props.words[index].wordId);
+      store.deleteWords(this.props.bookId, wordIds);
+    }
+  }
+
   render() {
     return (
       <div className="row margin-top-1rem">
         <div className="col-xs-12">
           <Table
-            onRowSelection={this.handleSelectedRowsChanged.bind(this)}
+            onRowSelection={selectedRows => this.setState({ selectedRows })}
             multiSelectable
           >
             <TableHeader displaySelectAll={false}>
@@ -62,20 +70,6 @@ export default class WordTable extends React.Component {
         </div>
       </div>
     );
-  }
-
-  handleSelectedRowsChanged(selectedRows) {
-    this.setState({
-      selectedRows,
-    });
-  }
-
-  deleteSelectedRows() {
-    if (confirm('消去してもよろしいですか？')) {
-      const wordIds = this.state.selectedRows
-        .map(index => this.props.words[index].wordId);
-      store.deleteWords(this.props.bookId, wordIds);
-    }
   }
 }
 

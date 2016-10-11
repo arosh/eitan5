@@ -23,6 +23,11 @@ const Logged = ({ books, words }) => (
   </div>
 );
 
+Logged.propTypes = {
+  books: React.PropTypes.arrayOf(React.PropTypes.object),
+  words: React.PropTypes.arrayOf(React.PropTypes.object),
+};
+
 const Anonymous = () => (
   <div>
     単語帳アプリです。
@@ -42,16 +47,6 @@ export default class Home extends React.Component {
     store.on(UPDATE_RECENT_WORDS, this.onRecentWordsUpdated.bind(this));
   }
 
-  render() {
-    if (!this.state.logged) {
-      return <Anonymous />;
-    }
-    if (this.state.books === null || this.state.recentWords === null) {
-      return <Loading />;
-    }
-    return <Logged books={this.state.books} words={this.state.recentWords} />;
-  }
-
   onLoggedUpdated() {
     this.setState({
       logged: firebaseService.isLogged(),
@@ -69,5 +64,15 @@ export default class Home extends React.Component {
     this.setState({
       recentWords: store.getRecentWords(),
     });
+  }
+
+  render() {
+    if (!this.state.logged) {
+      return <Anonymous />;
+    }
+    if (this.state.books === null || this.state.recentWords === null) {
+      return <Loading />;
+    }
+    return <Logged books={this.state.books} words={this.state.recentWords} />;
   }
 }

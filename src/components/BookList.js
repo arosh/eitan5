@@ -15,6 +15,19 @@ const RemoveButton = props => (
 RemoveButton.muiName = 'IconButton';
 
 export default class BookList extends React.Component {
+  openBookAddDialog() {
+    store.setBookAddDialogOpen(true);
+  }
+
+  handleBookClicked(bookId) {
+    store.setDrawerOpen(false);
+    this.context.router.transitionTo(`/books/${bookId}`);
+  }
+
+  deleteItem(bookId) {
+    store.deleteBook(bookId, () => {});
+  }
+
   render() {
     // 削除ボタンを付ける方法
     // rightIconButton={<RemoveButton onTouchTap={() => this.deleteItem(book.bookId)} />}
@@ -36,7 +49,7 @@ export default class BookList extends React.Component {
           <ListItem
             leftIcon={<IconAdd />}
             primaryText="文献追加"
-            onTouchTap={this.handleBookAddClicked.bind(this)}
+            onTouchTap={this.openBookAddDialog.bind(this)}
           />
           <div>
             {bookItems}
@@ -45,20 +58,11 @@ export default class BookList extends React.Component {
       </Card>
     );
   }
-
-  handleBookAddClicked() {
-    store.setBookAddDialogOpen(true);
-  }
-
-  handleBookClicked(bookId) {
-    store.setDrawerOpen(false);
-    this.context.router.transitionTo(`/books/${bookId}`);
-  }
-
-  deleteItem(bookId) {
-    store.deleteBook(bookId, () => {});
-  }
 }
+
+BookList.propTypes = {
+  books: React.PropTypes.arrayOf(React.PropTypes.object),
+};
 
 BookList.contextTypes = {
   router: React.PropTypes.object,

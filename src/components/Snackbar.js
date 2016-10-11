@@ -6,7 +6,6 @@ import store from '../Store';
 import { UPDATE_SNACKBAR } from '../EventTypes';
 
 export default class Snackbar extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -14,12 +13,6 @@ export default class Snackbar extends React.Component {
       message: '',
     };
     store.on(UPDATE_SNACKBAR, this.onMessageUpdated.bind(this));
-  }
-
-  requestClose() {
-    this.setState({
-      open: false,
-    });
   }
 
   onMessageUpdated() {
@@ -30,6 +23,12 @@ export default class Snackbar extends React.Component {
     });
   }
 
+  closeSnackbar() {
+    this.setState({
+      open: false,
+    });
+  }
+
   render() {
     return (
       <MSnackbar
@@ -37,8 +36,8 @@ export default class Snackbar extends React.Component {
         message={this.state.message}
         action="Close"
         autoHideDuration={4000}
-        onActionTouchTap={this.requestClose.bind(this)}
-        onRequestClose={this.requestClose.bind(this)}
+        onActionTouchTap={this.closeSnackbar.bind(this)}
+        onRequestClose={this.closeSnackbar.bind(this)}
       />
     );
   }

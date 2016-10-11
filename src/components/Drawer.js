@@ -19,7 +19,7 @@ class BookItems extends React.Component {
     const bookItems = this.props.books.map(book =>
       <MenuItem
         key={book.bookId}
-        onTouchTap={() => this.props.handleBookClicked(book.bookId)}
+        onTouchTap={() => this.props.transitionToBook(book.bookId)}
       >
         {book.title}
       </MenuItem>
@@ -27,6 +27,12 @@ class BookItems extends React.Component {
     return <div>{ bookItems }</div>;
   }
 }
+
+
+BookItems.propTypes = {
+  books: React.PropTypes.arrayOf(React.PropTypes.object),
+  transitionToBook: React.PropTypes.func,
+};
 
 export default class Drawer extends React.Component {
   constructor(props) {
@@ -39,54 +45,6 @@ export default class Drawer extends React.Component {
     store.on(UPDATE_DRAWER_OPEN, this.onDrawerOpenUpdated.bind(this));
     store.on(UPDATE_BOOKS, this.onBooksUpdated.bind(this));
     firebaseService.on(UPDATE_LOGGED, this.onLoggedUpdated.bind(this));
-  }
-
-  render() {
-    return (
-      <MDrawer
-        open={this.state.open}
-        docked={false}
-        onRequestChange={this.requestDrawerOpenChange.bind(this)}
-      >
-        <MenuItem
-          leftIcon={<IconHome />}
-          onTouchTap={this.handleHomeClicked.bind(this)}
-        >
-          Home
-        </MenuItem>
-        {this.state.logged ?
-          <MenuItem
-            leftIcon={<IconAddCircle />}
-            onTouchTap={this.handleBookAddClicked.bind(this)}
-          >
-            文献追加
-          </MenuItem> : <div />}
-        <Divider />
-        <BookItems
-          books={this.state.books}
-          handleBookClicked={this.handleBookClicked.bind(this)}
-        />
-      </MDrawer>
-    );
-  }
-
-  requestDrawerOpenChange(open) {
-    store.setDrawerOpen(open);
-  }
-
-  handleBookAddClicked() {
-    store.setDrawerOpen(false);
-    store.setBookAddDialogOpen(true);
-  }
-
-  handleBookClicked(bookId) {
-    store.setDrawerOpen(false);
-    this.context.router.transitionTo(`/books/${bookId}`);
-  }
-
-  handleHomeClicked() {
-    store.setDrawerOpen(false);
-    this.context.router.transitionTo('/');
   }
 
   onDrawerOpenUpdated() {
@@ -107,6 +65,58 @@ export default class Drawer extends React.Component {
     this.setState({
       logged: firebaseService.isLogged(),
     });
+  }
+
+  setDrawerOpen(open) {
+    store.setDrawerOpen(open);
+  }
+
+  closeDrawer() {
+    store.setDrawerOpen(false);
+  }
+
+  openBookAddDialog() {
+    this.closeDrawer();
+    store.setBookAddDialogOpen(true);
+  }
+
+  transitionToBook(bookId) {
+    this.closeDrawer();
+    this.context.router.transitionTo(`/books/${bookId}`);
+  }
+
+  transitionToHome() {
+    this.closeDrawer();
+    this.context.router.transitionTo('/');
+  }
+
+  render() {
+    return (
+      <MDrawer
+        open={this.state.open}
+        docked={false}
+        onRequestChange={this.setDrawerOpen.bind(this)}
+      >
+        <MenuItem
+          leftIcon={<IconHome />}
+          onTouchTap={this.transitionToHome.bind(this)}
+        >
+          Home
+        </MenuItem>
+        {this.state.logged ?
+          <MenuItem
+            leftIcon={<IconAddCircle />}
+            onTouchTap={this.openBookAddDialog.bind(this)}
+          >
+            文献追加
+          </MenuItem> : <div />}
+        <Divider />
+        <BookItems
+          books={this.state.books}
+          transitionToBook={this.transitionToBook.bind(this)}
+        />
+      </MDrawer>
+    );
   }
 }
 

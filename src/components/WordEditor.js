@@ -15,6 +15,53 @@ export default class WordEditor extends React.Component {
     };
   }
 
+  handleCopyClicked() {
+    const uniqueId = this.sentenceRef.uniqueId;
+    const textarea = document.getElementById(uniqueId);
+    const s = textarea.selectionStart;
+    const e = textarea.selectionEnd;
+    const subString = this.state.sentence.substring(s, e);
+    this.setState({
+      word: subString,
+    });
+  }
+
+  handleSentenceChanged(e) {
+    this.setState({
+      sentence: e.target.value,
+    });
+  }
+
+  handleWordChanged(e) {
+    this.setState({
+      word: e.target.value,
+    });
+  }
+
+  handleAnswerChanged(e) {
+    this.setState({
+      answer: e.target.value,
+    });
+  }
+
+  handleSaveClicked() {
+    const { bookId } = this.props;
+    const { word, answer, sentence } = this.state;
+    store.createWord(bookId, word, answer, sentence, () => {
+      this.setState({
+        word: '',
+        answer: '',
+      });
+    });
+  }
+
+  validate() {
+    if (this.state.word === '') {
+      return false;
+    }
+    return true;
+  }
+
   render() {
     const allowSubmittion = this.validate();
     return (
@@ -66,53 +113,6 @@ export default class WordEditor extends React.Component {
         </div>
       </div>
     );
-  }
-
-  handleCopyClicked() {
-    const uniqueId = this.sentenceRef.uniqueId;
-    const textarea = document.getElementById(uniqueId);
-    const s = textarea.selectionStart;
-    const e = textarea.selectionEnd;
-    const subString = this.state.sentence.substring(s, e);
-    this.setState({
-      word: subString,
-    });
-  }
-
-  handleSentenceChanged(e) {
-    this.setState({
-      sentence: e.target.value,
-    });
-  }
-
-  handleWordChanged(e) {
-    this.setState({
-      word: e.target.value,
-    });
-  }
-
-  handleAnswerChanged(e) {
-    this.setState({
-      answer: e.target.value,
-    });
-  }
-
-  handleSaveClicked() {
-    const { bookId } = this.props;
-    const { word, answer, sentence } = this.state;
-    store.createWord(bookId, word, answer, sentence, () => {
-      this.setState({
-        word: '',
-        answer: '',
-      });
-    });
-  }
-
-  validate() {
-    if (this.state.word === '') {
-      return false;
-    }
-    return true;
   }
 }
 

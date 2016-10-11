@@ -28,7 +28,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "deploy": "npm run build && firebase deploy",
-    "fix": "eslint --fix src/**/*.js || true",
+    "lint": "eslint --fix src/**/*.js || true",
     "postinstall": "typings install"
   },
   "eslintConfig": {

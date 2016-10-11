@@ -15,7 +15,53 @@ export default class BookAddDialog extends React.Component {
       title: '',
       description: '',
     };
-    store.on(UPDATE_BOOK_ADD_DIALOG_OPEN, this.onOpenUpdate.bind(this));
+    store.on(UPDATE_BOOK_ADD_DIALOG_OPEN, this.onOpenUpdated.bind(this));
+  }
+
+  onOpenUpdated() {
+    const open = store.isBookAddDialogOpen();
+    this.setState({
+      open,
+    });
+  }
+
+  closeDialog() {
+    store.setBookAddDialogOpen(false);
+  }
+
+  requestSave() {
+    const { title, description } = this.state;
+    store.createBook(title, description, (bookId) => {
+      this.closeDialog();
+      this.clearForm();
+      this.context.router.transitionTo(`/books/${bookId}`);
+    });
+  }
+
+  clearForm() {
+    this.setState({
+      title: '',
+      description: '',
+    });
+  }
+
+  handleTitleChanged(e) {
+    this.setState({
+      title: e.target.value,
+    });
+  }
+
+  handleDescriptionChanged(e) {
+    this.setState({
+      description: e.target.value,
+    });
+  }
+
+  validate() {
+    if (this.state.title === '') {
+      return false;
+    }
+    return true;
   }
 
   render() {
@@ -24,7 +70,7 @@ export default class BookAddDialog extends React.Component {
     const actions = [
       <FlatButton
         label="キャンセル"
-        onTouchTap={this.requestClose.bind(this)}
+        onTouchTap={this.closeDialog.bind(this)}
       />,
       <FlatButton
         label="追加"
@@ -39,7 +85,7 @@ export default class BookAddDialog extends React.Component {
         title="文献の追加"
         open={this.state.open}
         actions={actions}
-        onRequestClose={this.requestClose.bind(this)}
+        onRequestClose={this.closeDialog.bind(this)}
         autoScrollBodyContent
         modal
       >
@@ -61,52 +107,6 @@ export default class BookAddDialog extends React.Component {
         />
       </Dialog>
     );
-  }
-
-  requestClose() {
-    store.setBookAddDialogOpen(false);
-  }
-
-  requestSave() {
-    const { title, description } = this.state;
-    store.createBook(title, description, (bookId) => {
-      this.requestClose();
-      this.clearForm();
-      this.context.router.transitionTo(`/books/${bookId}`);
-    });
-  }
-
-  clearForm() {
-    this.setState({
-      title: '',
-      description: '',
-    });
-  }
-
-  onOpenUpdate() {
-    const open = store.isBookAddDialogOpen();
-    this.setState({
-      open,
-    });
-  }
-
-  handleTitleChanged(e) {
-    this.setState({
-      title: e.target.value,
-    });
-  }
-
-  handleDescriptionChanged(e) {
-    this.setState({
-      description: e.target.value,
-    });
-  }
-
-  validate() {
-    if (this.state.title === '') {
-      return false;
-    }
-    return true;
   }
 }
 

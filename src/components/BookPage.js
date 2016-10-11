@@ -33,47 +33,53 @@ export default class BookPage extends React.Component {
     }
   }
 
+  handleTitleChanged(e) {
+    this.setState({
+      title: e.target.value,
+    });
+  }
+
+  handleDescriptionChanged(e) {
+    this.setState({
+      description: e.target.value,
+    });
+  }
+
+  updateBook() {
+    store.updateBook(
+      this.props.params.bookId,
+      this.state.title,
+      this.state.description);
+  }
+
+  fetchBook(bookId) {
+    store.fetchBook(bookId, (book) => {
+      this.setState({
+        title: book.title,
+        description: book.description,
+        words: book.words,
+      });
+    });
+  }
+
   render() {
     if (!this.state) {
       return <Loading />;
     }
     return (<BookPaneOn
       bookId={this.props.params.bookId}
-      title={this.state.bookTitle}
-      description={this.state.bookDescription}
-      onTitleChange={this.handleBookTitleChanged.bind(this)}
-      onDescriptionChange={this.handleBookDescriptionChanged.bind(this)}
-      onSaveBookClick={this.handleSaveBookClicked.bind(this)}
+      title={this.state.title}
+      description={this.state.description}
+      onTitleChange={this.handleTitleChanged.bind(this)}
+      onDescriptionChange={this.handleDescriptionChanged.bind(this)}
+      onSaveBookClick={this.updateBook.bind(this)}
       words={this.state.words}
     />);
   }
-
-  handleBookTitleChanged(e) {
-    this.setState({
-      bookTitle: e.target.value,
-    });
-  }
-
-  handleBookDescriptionChanged(e) {
-    this.setState({
-      bookDescription: e.target.value,
-    });
-  }
-
-  handleSaveBookClicked() {
-    store.updateBook(
-      this.props.params.bookId,
-      this.state.bookTitle,
-      this.state.bookDescription);
-  }
-
-  fetchBook(bookId) {
-    store.fetchBook(bookId, (book) => {
-      this.setState({
-        bookTitle: book.title,
-        bookDescription: book.description,
-        words: book.words,
-      });
-    });
-  }
 }
+
+BookPage.propTypes = {
+  params: React.PropTypes.shape({
+    bookId: React.PropTypes.string,
+  }),
+};

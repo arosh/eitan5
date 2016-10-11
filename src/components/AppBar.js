@@ -18,7 +18,7 @@ class Login extends React.Component {
     };
   }
 
-  handleClicked(event) {
+  openPopover(event) {
     // This prevents ghost click.
     event.preventDefault();
     this.setState({
@@ -27,22 +27,27 @@ class Login extends React.Component {
     });
   }
 
-  requestClose() {
+  closePopover() {
     this.setState({
       open: false,
     });
   }
 
+  login(providerName) {
+    this.setState({ open: false });
+    firebaseService.login(providerName);
+  }
+
   render() {
     return (
       <div>
-        <FlatButton {...this.props} label="ログイン" onTouchTap={this.handleClicked.bind(this)} />
+        <FlatButton {...this.props} label="ログイン" onTouchTap={this.openPopover.bind(this)} />
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-          onRequestClose={this.requestClose.bind(this)}
+          onRequestClose={this.closePopover.bind(this)}
         >
           <Menu>
             <MenuItem
@@ -54,26 +59,21 @@ class Login extends React.Component {
       </div>
     );
   }
-
-  login(providerName) {
-    this.setState({ open: false });
-    firebaseService.login(providerName);
-  }
 }
 
 // https://github.com/callemall/material-ui/issues/5053
 Login.muiName = 'FlatButton';
 
 class Logged extends React.Component {
-  render() {
-    return (
-      <FlatButton {...this.props} label="ログアウト" onTouchTap={this.handleClicked.bind(this)} />
-    );
-  }
-
-  handleClicked() {
+  logout() {
     firebaseService.logout();
     this.context.router.transitionTo('/');
+  }
+
+  render() {
+    return (
+      <FlatButton {...this.props} label="ログアウト" onTouchTap={this.logout.bind(this)} />
+    );
   }
 }
 
@@ -109,7 +109,7 @@ export default class AppBar extends React.Component {
     });
   }
 
-  handleTitleClicked() {
+  transitionToHome() {
     this.context.router.transitionTo('/');
   }
 
@@ -117,7 +117,7 @@ export default class AppBar extends React.Component {
     return (
       <MAppBar
         title={<span style={styles.title}>eitan5</span>}
-        onTitleTouchTap={this.handleTitleClicked.bind(this)}
+        onTitleTouchTap={this.transitionToHome.bind(this)}
         onLeftIconButtonTouchTap={() => store.setDrawerOpen(true)}
         iconElementRight={this.state.logged ? <Logged /> : <Login />}
         style={styles.appbar}
