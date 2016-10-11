@@ -24,7 +24,7 @@ export default class WordTable extends React.Component {
   }
 
   deleteSelectedRows() {
-    if (confirm('消去してもよろしいですか？')) {
+    if (confirm('削除してもよろしいですか？')) {
       const wordIds = this.state.selectedRows
         .map(index => this.props.words[index].wordId);
       store.deleteWords(this.props.bookId, wordIds);
@@ -62,7 +62,7 @@ export default class WordTable extends React.Component {
         </div>
         <div className="col-xs-12 end-xs margin-top-1rem">
           <RaisedButton
-            label="消去"
+            label="削除"
             disabled={this.state.selectedRows.length === 0}
             onTouchTap={this.deleteSelectedRows.bind(this)}
             secondary

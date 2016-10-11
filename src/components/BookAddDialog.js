@@ -36,7 +36,7 @@ export default class BookAddDialog extends React.Component {
     store.setBookAddDialogOpen(false);
   }
 
-  requestSave() {
+  createBook() {
     const { title, description } = this.state;
     store.createBook(title, description, (bookId) => {
       this.closeDialog();
@@ -81,7 +81,7 @@ export default class BookAddDialog extends React.Component {
       />,
       <FlatButton
         label="追加"
-        onTouchTap={this.requestSave.bind(this)}
+        onTouchTap={this.createBook.bind(this)}
         disabled={!allowSubmittion}
         primary
       />,

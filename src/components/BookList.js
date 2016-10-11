@@ -24,20 +24,23 @@ export default class BookList extends React.Component {
     this.context.router.transitionTo(`/books/${bookId}`);
   }
 
-  deleteItem(bookId) {
-    store.deleteBook(bookId, () => {});
+  deleteItem(bookId, title) {
+    if (confirm(`文献「${title}」を削除してもよろしいですか？`)) {
+      store.deleteBook(bookId);
+    }
   }
 
   render() {
-    // 削除ボタンを付ける方法
-    // rightIconButton={<RemoveButton onTouchTap={() => this.deleteItem(book.bookId)} />}
-    // 単語を0にしないと消せないようにする
     const bookItems = this.props.books.map(book =>
       <ListItem
         key={book.bookId}
         primaryText={book.title}
         secondaryText={book.description}
         onTouchTap={() => this.handleBookClicked(book.bookId)}
+        rightIconButton={
+          <RemoveButton
+            onTouchTap={() => this.deleteItem(book.bookId, book.title)}
+          />}
         insetChildren
       />
     );

@@ -101,6 +101,7 @@ class FirebaseService extends EventEmitter {
           .set({ title, description, bookId });
       })
       .then(() => {
+        store.setSnackbarMessage(`文献「${title}」を作成しました`);
         onSuccess(bookId);
       }, (error) => {
         store.setSnackbarMessage(error.message);
@@ -118,6 +119,7 @@ class FirebaseService extends EventEmitter {
           .set({ word, answer, sentence, bookId, wordId });
       })
       .then(() => {
+        store.setSnackbarMessage(`「${word}」を追加しました`);
         onSuccess(wordId);
         this.emit(UPDATE_WORDS);
       }, (error) => {
@@ -126,21 +128,29 @@ class FirebaseService extends EventEmitter {
   }
 
   deleteBook(bookId, onSuccess) {
-    const uid = this.getUID();
-    firebase.database().ref(`/books/${bookId}`).remove()
-      .then(() => {
-        return firebase.database().ref(`/users/${uid}/books/${bookId}`).remove();
-      })
-      .then(() => {
-        store.setSnackbarMessage('文献を削除しました');
-        onSuccess();
-      }, (error) => {
-        store.setSnackbarMessage(error.message);
-      });
+    this.fetchBook(bookId, (data) => {
+      if (data.words.length > 0) {
+        store.setSnackbarMessage('文献に含まれる単語を全て削除してください');
+        return;
+      }
+      const uid = this.getUID();
+      firebase.database().ref(`/books/${bookId}`).remove()
+        .then(() => {
+          return firebase.database().ref(`/users/${uid}/books/${bookId}`).remove();
+        })
+        .then(() => {
+          store.setSnackbarMessage(`文献「${data.title}」を削除しました`);
+          if (typeof onSuccess === 'function') {
+            onSuccess();
+          }
+        }, (error) => {
+          store.setSnackbarMessage(error.message);
+        });
+    });
   }
 
   fetchBook(bookId, onSuccess) {
-    return firebase.database().ref(`/books/${bookId}`).once('value')
+    firebase.database().ref(`/books/${bookId}`).once('value')
       .then((snapshot) => {
         const newData = snapshot.val();
         if (!newData.words) {
@@ -155,8 +165,8 @@ class FirebaseService extends EventEmitter {
           words,
         };
       })
-      .then((newData) => {
-        onSuccess(newData);
+      .then((data) => {
+        onSuccess(data);
       }, (error) => {
         store.setSnackbarMessage(error.message);
       });
@@ -202,6 +212,7 @@ class FirebaseService extends EventEmitter {
     }
     firebase.Promise.all(promise)
       .then(() => {
+        store.setSnackbarMessage('単語を削除しました');
         this.emit(UPDATE_WORDS);
       }, (error) => {
         store.setSnackbarMessage(error.message);
