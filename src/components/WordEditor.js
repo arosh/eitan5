@@ -1,11 +1,71 @@
 import * as React from 'react';
+import MicroContainer from 'react-micro-container';
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import store from '../Store';
 
-export default class WordEditor extends React.Component {
+const WordEditor = props => (
+  <div className="margin-top-1rem">
+    <div className="row middle-xs">
+      <div className="col-md-10 col-sm-9 col-xs-12">
+        <TextField
+          ref={props.setSentenceRef}
+          value={props.sentence}
+          onChange={e => props.dispatch('changeSentence', e)}
+          floatingLabelText="例文"
+          rows={2}
+          multiLine
+          fullWidth
+        />
+      </div>
+      <div className="col-md-2 col-sm-3 center-sm col-xs-12 end-xs">
+        <RaisedButton
+          onTouchTap={() => props.dispatch('copy')}
+          label="選択範囲をコピー"
+        />
+      </div>
+    </div>
+    <div className="row middle-xs">
+      <div className="col-md-5 col-sm-4 col-xs-12">
+        <TextField
+          value={props.word}
+          onChange={e => props.dispatch('changeWord', e)}
+          floatingLabelText="単語（必須）"
+          fullWidth
+        />
+      </div>
+      <div className="col-md-5 col-sm-5 col-xs-12">
+        <TextField
+          value={props.answer}
+          onChange={e => props.dispatch('changeAnswer', e)}
+          floatingLabelText="答え"
+          fullWidth
+        />
+      </div>
+      <div className="col-md-2 col-sm-3 center-sm col-xs-12 end-xs">
+        <RaisedButton
+          disabled={!props.allowSubmittion}
+          onTouchTap={() => props.dispatch('save')}
+          label="追加"
+          primary
+        />
+      </div>
+    </div>
+  </div>
+);
+
+WordEditor.propTypes = {
+  dispatch: React.PropTypes.func,
+  sentence: React.PropTypes.string,
+  setSentenceRef: React.PropTypes.func,
+  word: React.PropTypes.string,
+  answer: React.PropTypes.string,
+  allowSubmittion: React.PropTypes.bool,
+};
+
+export default class WordEditorContainer extends MicroContainer {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,6 +73,16 @@ export default class WordEditor extends React.Component {
       word: '',
       answer: '',
     };
+  }
+
+  componentDidMount() {
+    this.subscribe({
+      changeSentence: this.handleSentenceChanged,
+      copy: this.handleCopyClicked,
+      changeWord: this.handleWordChanged,
+      changeAnswer: this.handleAnswerChanged,
+      save: this.handleSaveClicked,
+    });
   }
 
   handleCopyClicked() {
@@ -65,57 +135,16 @@ export default class WordEditor extends React.Component {
   render() {
     const allowSubmittion = this.validate();
     return (
-      <div className="margin-top-1rem">
-        <div className="row middle-xs">
-          <div className="col-md-10 col-sm-9 col-xs-12">
-            <TextField
-              ref={ref => this.sentenceRef = ref}
-              value={this.state.sentence}
-              onChange={this.handleSentenceChanged.bind(this)}
-              floatingLabelText="例文"
-              multiLine
-              fullWidth
-              rows={2}
-            />
-          </div>
-          <div className="col-md-2 col-sm-3 center-sm col-xs-12 end-xs">
-            <RaisedButton
-              label="選択範囲をコピー"
-              onTouchTap={this.handleCopyClicked.bind(this)}
-            />
-          </div>
-        </div>
-        <div className="row middle-xs">
-          <div className="col-md-5 col-sm-4 col-xs-12">
-            <TextField
-              value={this.state.word}
-              onChange={this.handleWordChanged.bind(this)}
-              floatingLabelText="単語（必須）"
-              fullWidth
-            />
-          </div>
-          <div className="col-md-5 col-sm-5 col-xs-12">
-            <TextField
-              value={this.state.answer}
-              onChange={this.handleAnswerChanged.bind(this)}
-              floatingLabelText="答え"
-              fullWidth
-            />
-          </div>
-          <div className="col-md-2 col-sm-3 center-sm col-xs-12 end-xs">
-            <RaisedButton
-              label="追加"
-              onTouchTap={this.handleSaveClicked.bind(this)}
-              disabled={!allowSubmittion}
-              primary
-            />
-          </div>
-        </div>
-      </div>
+      <WordEditor
+        dispatch={this.dispatch}
+        {...this.state}
+        setSentenceRef={ref => this.sentenceRef = ref}
+        allowSubmittion={allowSubmittion}
+      />
     );
   }
 }
 
-WordEditor.propTypes = {
+WordEditorContainer.propTypes = {
   bookId: React.PropTypes.string,
 };
