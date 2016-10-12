@@ -64,7 +64,7 @@ export default class WordTable extends React.Component {
           <RaisedButton
             label="削除"
             disabled={this.state.selectedRows.length === 0}
-            onTouchTap={this.deleteSelectedRows.bind(this)}
+            onTouchTap={(e) => { e.preventDefault(); this.deleteSelectedRows(); }}
             secondary
           />
         </div>
