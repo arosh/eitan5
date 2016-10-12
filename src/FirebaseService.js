@@ -64,7 +64,6 @@ class FirebaseService extends EventEmitter {
   signInWithGoogle() {
     // https://firebase.google.com/docs/auth/web/google-signin
     const provider = new firebase.auth.GoogleAuthProvider();
-    // eslint-disable-next-line no-unused-vars
     this.auth.signInWithPopup(provider)
       .then(() => {
         store.setSnackbarMessage('ログインしました');
@@ -73,9 +72,22 @@ class FirebaseService extends EventEmitter {
       });
   }
 
+  signInWithTwitter() {
+    // https://firebase.google.com/docs/auth/web/twitter-login
+    const provider = new firebase.auth.TwitterAuthProvider();
+    this.auth.signInWithPopup(provider)
+    .then(() => {
+      store.setSnackbarMessage('ログインしました');
+    }, (error) => {
+      store.setSnackbarMessage(error.message);
+    });
+  }
+
   login(providerName) {
     if (providerName === 'Google') {
       this.signInWithGoogle();
+    } else if (providerName === 'Twitter') {
+      this.signInWithTwitter();
     }
   }
 

@@ -55,6 +55,10 @@ class Login extends React.Component {
               primaryText="Sign in with Google"
               onTouchTap={() => this.login('Google')}
             />
+            <MenuItem
+              primaryText="Sign in with Twitter"
+              onTouchTap={() => this.login('Twitter')}
+            />
           </Menu>
         </Popover>
       </div>
