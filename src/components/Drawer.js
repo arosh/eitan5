@@ -118,7 +118,7 @@ export default class Drawer extends React.Component {
             onTouchTap={this.openBookAddDialog.bind(this)}
           >
             文献追加
-          </MenuItem> : <div />}
+          </MenuItem> : null}
         <Divider />
         <BookItems
           books={this.state.books}

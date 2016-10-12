@@ -73,7 +73,7 @@ class Logged extends React.Component {
 
   render() {
     return (
-      <FlatButton {...this.props} label="ログアウト" onTouchTap={this.logout.bind(this)} />
+      <FlatButton {...this.props} label="ログアウト" onTouchTap={() => this.logout()} />
     );
   }
 }
