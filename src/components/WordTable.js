@@ -107,7 +107,7 @@ export default class WordTable extends MicroContainer {
         </div>
         <div className="col-xs-12 end-xs margin-top-1rem">
           <RemoveButton
-            enable={this.state.selectedRows.length === 0}
+            enable={this.state.selectedRows.length > 0}
             dispatch={this.dispatch}
           />
         </div>
