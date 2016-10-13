@@ -25,7 +25,8 @@
     "react-dom": "^15.3.2",
     "react-micro-container": "^1.1.0",
     "react-router": "^4.0.0-alpha.4",
-    "react-tap-event-plugin": "^1.0.0"
+    "react-tap-event-plugin": "^1.0.0",
+    "truncate": "^2.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

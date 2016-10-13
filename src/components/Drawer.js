@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import truncate from 'truncate';
+
 import Divider from 'material-ui/Divider';
 import MDrawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
@@ -21,7 +23,7 @@ class BookItems extends React.Component {
         key={book.bookId}
         onTouchTap={() => this.props.transitionToBook(book.bookId)}
       >
-        {book.title}
+        {truncate(book.title, 29)}
       </MenuItem>
     );
     return <div>{ bookItems }</div>;
