@@ -83,7 +83,8 @@ export default class WordTable extends MicroContainer {
   }
 
   deleteSelectedRows() {
-    if (confirm('削除してもよろしいですか？')) {
+    const numSelectedRows = this.state.selectedRows.length;
+    if (confirm(`${numSelectedRows}件の単語を削除してもよろしいですか？`)) {
       const wordIds = this.state.selectedRows
         .map(index => this.props.words[index].wordId);
       store.deleteWords(this.props.bookId, wordIds);
