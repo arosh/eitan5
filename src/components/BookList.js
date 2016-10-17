@@ -65,9 +65,9 @@ export default class BookList extends React.Component {
 }
 
 BookList.propTypes = {
-  books: React.PropTypes.arrayOf(React.PropTypes.object),
+  books: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
 };
 
 BookList.contextTypes = {
-  router: React.PropTypes.object,
+  router: React.PropTypes.object.isRequired,
 };

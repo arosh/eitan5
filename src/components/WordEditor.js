@@ -57,12 +57,12 @@ const WordEditor = props => (
 );
 
 WordEditor.propTypes = {
-  dispatch: React.PropTypes.func,
-  sentence: React.PropTypes.string,
-  setSentenceRef: React.PropTypes.func,
-  word: React.PropTypes.string,
-  answer: React.PropTypes.string,
-  allowSubmittion: React.PropTypes.bool,
+  dispatch: React.PropTypes.func.isRequired,
+  sentence: React.PropTypes.string.isRequired,
+  setSentenceRef: React.PropTypes.func.isRequired,
+  word: React.PropTypes.string.isRequired,
+  answer: React.PropTypes.string.isRequired,
+  allowSubmittion: React.PropTypes.bool.isRequired,
 };
 
 export default class WordEditorContainer extends MicroContainer {
@@ -146,5 +146,5 @@ export default class WordEditorContainer extends MicroContainer {
 }
 
 WordEditorContainer.propTypes = {
-  bookId: React.PropTypes.string,
+  bookId: React.PropTypes.string.isRequired,
 };

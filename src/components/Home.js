@@ -24,8 +24,8 @@ const Logged = ({ books, words }) => (
 );
 
 Logged.propTypes = {
-  books: React.PropTypes.arrayOf(React.PropTypes.object),
-  words: React.PropTypes.arrayOf(React.PropTypes.object),
+  books: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+  words: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
 };
 
 const Anonymous = () => (

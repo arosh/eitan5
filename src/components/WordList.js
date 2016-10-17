@@ -27,11 +27,11 @@ class WordItems extends React.Component {
 }
 
 WordItems.propTypes = {
-  words: React.PropTypes.arrayOf(React.PropTypes.object),
+  words: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
 };
 
 WordItems.contextTypes = {
-  router: React.PropTypes.object,
+  router: React.PropTypes.object.isRequired,
 };
 
 export default class WordList extends React.Component {
@@ -48,5 +48,5 @@ export default class WordList extends React.Component {
 }
 
 WordList.propTypes = {
-  words: React.PropTypes.arrayOf(React.PropTypes.object),
+  words: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
 };

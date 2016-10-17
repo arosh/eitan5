@@ -19,8 +19,8 @@ const Panel = ({ heading, children }) => (
 );
 
 Panel.propTypes = {
-  heading: React.PropTypes.string,
-  children: React.PropTypes.node,
+  heading: React.PropTypes.string.isRequired,
+  children: React.PropTypes.node.isRequired,
 };
 
 export default Panel;

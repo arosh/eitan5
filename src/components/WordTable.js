@@ -42,8 +42,8 @@ const Body = props => (
 Body.muiName = 'TableBody';
 
 Body.propTypes = {
-  words: React.PropTypes.arrayOf(React.PropTypes.object),
-  selectedRows: React.PropTypes.arrayOf(React.PropTypes.number),
+  words: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+  selectedRows: React.PropTypes.arrayOf(React.PropTypes.number).isRequired,
 };
 
 const RemoveButton = props => (
@@ -58,8 +58,8 @@ const RemoveButton = props => (
 RemoveButton.muiName = 'RaisedButton';
 
 RemoveButton.propTypes = {
-  enable: React.PropTypes.bool,
-  dispatch: React.PropTypes.func,
+  enable: React.PropTypes.bool.isRequired,
+  dispatch: React.PropTypes.func.isRequired,
 };
 
 export default class WordTable extends MicroContainer {
@@ -118,6 +118,6 @@ export default class WordTable extends MicroContainer {
 }
 
 WordTable.propTypes = {
-  bookId: React.PropTypes.string,
-  words: React.PropTypes.arrayOf(React.PropTypes.object),
+  bookId: React.PropTypes.string.isRequired,
+  words: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
 };

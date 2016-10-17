@@ -32,8 +32,8 @@ class BookItems extends React.Component {
 
 
 BookItems.propTypes = {
-  books: React.PropTypes.arrayOf(React.PropTypes.object),
-  transitionToBook: React.PropTypes.func,
+  books: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+  transitionToBook: React.PropTypes.func.isRequired,
 };
 
 export default class Drawer extends React.Component {

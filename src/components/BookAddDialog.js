@@ -121,5 +121,5 @@ export default class BookAddDialog extends React.Component {
 }
 
 BookAddDialog.contextTypes = {
-  router: React.PropTypes.object,
+  router: React.PropTypes.object.isRequired,
 };

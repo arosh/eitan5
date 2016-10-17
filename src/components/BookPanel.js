@@ -34,11 +34,11 @@ const BookPanel = ({ title, description, onTitleChange, onDescriptionChange, onS
 );
 
 BookPanel.propTypes = {
-  title: React.PropTypes.string,
-  description: React.PropTypes.string,
-  onTitleChange: React.PropTypes.func,
-  onDescriptionChange: React.PropTypes.func,
-  onSaveBookClick: React.PropTypes.func,
+  title: React.PropTypes.string.isRequired,
+  description: React.PropTypes.string.isRequired,
+  onTitleChange: React.PropTypes.func.isRequired,
+  onDescriptionChange: React.PropTypes.func.isRequired,
+  onSaveBookClick: React.PropTypes.func.isRequired,
 };
 
 export default BookPanel;

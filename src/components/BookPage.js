@@ -90,5 +90,5 @@ export default class BookPage extends React.Component {
 BookPage.propTypes = {
   params: React.PropTypes.shape({
     bookId: React.PropTypes.string,
-  }),
+  }).isRequired,
 };
