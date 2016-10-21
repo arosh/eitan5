@@ -19,6 +19,11 @@ class FirebaseService extends EventEmitter {
     this.setupAuthStateChanged();
   }
 
+  trace(e) {
+    console.error(e.message);
+    store.setSnackbarMessage(e.message);
+  }
+
   setupApp() {
     const config = {
       apiKey: 'AIzaSyCkboz9C4mKfir9iFLomUw8w_aqg5JAYy0',
@@ -68,7 +73,7 @@ class FirebaseService extends EventEmitter {
       .then(() => {
         store.setSnackbarMessage('ログインしました');
       }, (error) => {
-        store.setSnackbarMessage(error.message);
+        this.trace(error);
       });
   }
 
@@ -79,7 +84,7 @@ class FirebaseService extends EventEmitter {
     .then(() => {
       store.setSnackbarMessage('ログインしました');
     }, (error) => {
-      store.setSnackbarMessage(error.message);
+      this.trace(error);
     });
   }
 
@@ -96,7 +101,7 @@ class FirebaseService extends EventEmitter {
       .then(() => {
         store.setSnackbarMessage('ログアウトしました');
       }, (error) => {
-        store.setSnackbarMessage(error.message);
+        this.trace(error);
       });
   }
 
@@ -104,10 +109,10 @@ class FirebaseService extends EventEmitter {
     return this.user.uid;
   }
 
-  createBook(title, description, onSuccess) {
+  createBook(title, description) {
     const uid = this.getUID();
     let bookId = null;
-    this.database.ref('/books')
+    return this.database.ref('/books')
       .push({ uid, title, description })
       .then((ref) => {
         bookId = ref.key;
@@ -116,16 +121,17 @@ class FirebaseService extends EventEmitter {
       })
       .then(() => {
         store.setSnackbarMessage(`文献「${title}」を作成しました`);
-        onSuccess(bookId);
+        return bookId;
       }, (error) => {
-        store.setSnackbarMessage(error.message);
+        this.trace(error);
+        return error;
       });
   }
 
-  createWord(bookId, word, answer, sentence, onSuccess) {
+  createWord(bookId, word, answer, sentence) {
     const uid = this.getUID();
     let wordId = null;
-    this.database.ref(`/books/${bookId}/words`)
+    return this.database.ref(`/books/${bookId}/words`)
       .push({ word, answer, sentence })
       .then((ref) => {
         wordId = ref.key;
@@ -134,37 +140,38 @@ class FirebaseService extends EventEmitter {
       })
       .then(() => {
         store.setSnackbarMessage(`「${word}」を追加しました`);
-        onSuccess(wordId);
         this.emit(UPDATE_WORDS);
+        return wordId;
       }, (error) => {
-        store.setSnackbarMessage(error.message);
+        this.trace(error);
+        return error;
       });
   }
 
-  deleteBook(bookId, onSuccess) {
-    this.fetchBook(bookId, (data) => {
+  deleteBook(bookId) {
+    return this.fetchBook(bookId).then((data) => {
       if (data.words.length > 0) {
-        store.setSnackbarMessage('文献に含まれる単語を全て削除してください');
-        return;
+        const message = '文献に含まれる単語を全て削除してください';
+        store.setSnackbarMessage(message);
+        return firebase.Promise.reject({ message });
       }
       const uid = this.getUID();
-      this.database.ref(`/books/${bookId}`).remove()
+      return this.database.ref(`/books/${bookId}`).remove()
         .then(() => {
-          return this.database.ref(`/users/${uid}/books/${bookId}`).remove();
+          const ref = this.database.ref(`/users/${uid}/books/${bookId}`);
+          return ref.remove();
         })
         .then(() => {
           store.setSnackbarMessage(`文献「${data.title}」を削除しました`);
-          if (typeof onSuccess === 'function') {
-            onSuccess();
-          }
         }, (error) => {
-          store.setSnackbarMessage(error.message);
+          this.trace(error);
+          return error;
         });
     });
   }
 
-  fetchBook(bookId, onSuccess) {
-    this.database.ref(`/books/${bookId}`).once('value')
+  fetchBook(bookId) {
+    return this.database.ref(`/books/${bookId}`).once('value')
       .then((snapshot) => {
         const newData = snapshot.val();
         if (!newData.words) {
@@ -180,9 +187,10 @@ class FirebaseService extends EventEmitter {
         };
       })
       .then((data) => {
-        onSuccess(data);
+        return data;
       }, (error) => {
-        store.setSnackbarMessage(error.message);
+        this.trace(error);
+        return error;
       });
   }
 
@@ -211,7 +219,7 @@ class FirebaseService extends EventEmitter {
       .then(() => {
         store.setSnackbarMessage('変更を保存しました');
       }, (error) => {
-        store.setSnackbarMessage(error.message);
+        this.trace(error);
       });
   }
 
@@ -219,17 +227,20 @@ class FirebaseService extends EventEmitter {
     const uid = this.getUID();
     const promise = [];
     for (const wordId of wordIds) {
-      promise.push(this.database
-        .ref(`/books/${bookId}/words/${wordId}`).remove());
-      promise.push(this.database
-        .ref(`/users/${uid}/recentWords/${wordId}`).remove());
+      let ref;
+
+      ref = this.database.ref(`/books/${bookId}/words/${wordId}`);
+      promise.push(ref.remove());
+
+      ref = this.database.ref(`/users/${uid}/recentWords/${wordId}`);
+      promise.push(ref.remove());
     }
     firebase.Promise.all(promise)
       .then(() => {
         store.setSnackbarMessage('単語を削除しました');
         this.emit(UPDATE_WORDS);
       }, (error) => {
-        store.setSnackbarMessage(error.message);
+        this.trace(error);
       });
   }
 }

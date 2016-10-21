@@ -49,20 +49,20 @@ class Store extends EventEmitter {
     return this.snackbarMessage;
   }
 
-  createBook(title, description, onSuccess) {
-    firebaseService.createBook(title, description, onSuccess);
+  createBook(title, description) {
+    return firebaseService.createBook(title, description);
   }
 
   updateBook(bookId, title, description) {
     firebaseService.updateBook(bookId, title, description);
   }
 
-  deleteBook(bookId, onSuccess) {
-    firebaseService.deleteBook(bookId, onSuccess);
+  deleteBook(bookId) {
+    return firebaseService.deleteBook(bookId);
   }
 
-  fetchBook(bookId, onSuccess) {
-    firebaseService.fetchBook(bookId, onSuccess);
+  fetchBook(bookId) {
+    return firebaseService.fetchBook(bookId);
   }
 
   onBooksUpdated(books) {
@@ -74,8 +74,8 @@ class Store extends EventEmitter {
     return this.books;
   }
 
-  createWord(bookId, word, answer, sentence, onSuccess) {
-    firebaseService.createWord(bookId, word, answer, sentence, onSuccess);
+  createWord(bookId, word, answer, sentence) {
+    return firebaseService.createWord(bookId, word, answer, sentence);
   }
 
   deleteWords(bookId, wordIds) {

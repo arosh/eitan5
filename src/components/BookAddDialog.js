@@ -91,7 +91,7 @@ export default class BookAddDialogContainer extends MicroContainer {
 
   createBook() {
     const { title, description } = this.state;
-    store.createBook(title, description, (bookId) => {
+    store.createBook(title, description).then((bookId) => {
       this.closeDialog();
       this.clearForm();
       this.context.router.transitionTo(`/books/${bookId}`);

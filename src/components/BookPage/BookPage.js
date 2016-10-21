@@ -82,7 +82,7 @@ export default class BookPage extends MicroContainer {
   }
 
   fetch(bookId) {
-    store.fetchBook(bookId, (book) => {
+    store.fetchBook(bookId).then((book) => {
       this.setState({
         title: book.title,
         description: book.description,

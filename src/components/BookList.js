@@ -26,7 +26,11 @@ export default class BookList extends React.Component {
 
   deleteItem(bookId, title) {
     if (confirm(`文献「${title}」を削除してもよろしいですか？`)) {
-      store.deleteBook(bookId);
+      store.deleteBook(bookId).then(() => {
+        // do nothing
+      }, (/* error */) => {
+        // do nothing;
+      });
     }
   }
 

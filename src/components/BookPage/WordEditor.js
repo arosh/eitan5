@@ -117,7 +117,7 @@ export default class WordEditorContainer extends MicroContainer {
   handleSaveClicked() {
     const { bookId } = this.props;
     const { word, answer, sentence } = this.state;
-    store.createWord(bookId, word, answer, sentence, () => {
+    store.createWord(bookId, word, answer, sentence).then(() => {
       this.setState({
         word: '',
         answer: '',
