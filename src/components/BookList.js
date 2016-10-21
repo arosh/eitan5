@@ -53,7 +53,7 @@ export default class BookList extends React.Component {
           <ListItem
             leftIcon={<IconAdd />}
             primaryText="文献追加"
-            onTouchTap={this.openBookAddDialog.bind(this)}
+            onTouchTap={() => this.openBookAddDialog()}
           />
           <div>
             {bookItems}

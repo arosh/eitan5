@@ -11,7 +11,7 @@ import { UPDATE_BOOK_ADD_DIALOG_OPEN } from '../EventTypes';
 // Dialogの中でTextFieldを使うと問題が出る
 // http://qiita.com/koizuss@github/items/ddd656cbafd888f179d6
 // https://github.com/callemall/material-ui/issues/3394
-const BookAddDialogRenderer = ({ dispatch, actions, open, title, description }) => (
+const BookAddDialog = ({ dispatch, actions, open, title, description }) => (
   <Dialog
     title="文献の追加"
     open={open}
@@ -39,7 +39,7 @@ const BookAddDialogRenderer = ({ dispatch, actions, open, title, description }) 
   </Dialog>
 );
 
-BookAddDialogRenderer.propTypes = {
+BookAddDialog.propTypes = {
   dispatch: React.PropTypes.func,
   actions: React.PropTypes.arrayOf(React.PropTypes.element).isRequired,
   open: React.PropTypes.bool.isRequired,
@@ -47,7 +47,7 @@ BookAddDialogRenderer.propTypes = {
   description: React.PropTypes.string.isRequired,
 };
 
-export default class BookAddDialog extends MicroContainer {
+export default class BookAddDialogContainer extends MicroContainer {
   constructor(props) {
     super(props);
     this.state = {
@@ -134,11 +134,11 @@ export default class BookAddDialog extends MicroContainer {
     ];
 
     return (
-      <BookAddDialogRenderer dispatch={this.dispatch} actions={actions} {...this.state} />
+      <BookAddDialog dispatch={this.dispatch} actions={actions} {...this.state} />
     );
   }
 }
 
-BookAddDialog.contextTypes = {
+BookAddDialogContainer.contextTypes = {
   router: React.PropTypes.object.isRequired,
 };

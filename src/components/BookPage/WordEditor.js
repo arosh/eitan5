@@ -4,7 +4,7 @@ import MicroContainer from 'react-micro-container';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import store from '../Store';
+import store from '../../Store';
 
 const WordEditor = props => (
   <div className="margin-top-1rem">

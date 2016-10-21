@@ -3,7 +3,7 @@ import * as React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
-import Panel from './Panel';
+import Panel from '../Panel';
 
 const BookPanel = ({ title, description, onTitleChange, onDescriptionChange, onSaveBookClick }) => (
   <Panel heading="文献情報">
