@@ -106,25 +106,25 @@ export default class Drawer extends React.Component {
       <MDrawer
         open={this.state.open}
         docked={false}
-        onRequestChange={this.setDrawerOpen.bind(this)}
+        onRequestChange={open => this.setDrawerOpen(open)}
       >
         <MenuItem
           leftIcon={<IconHome />}
-          onTouchTap={this.transitionToHome.bind(this)}
+          onTouchTap={() => this.transitionToHome()}
         >
           Home
         </MenuItem>
         {this.state.logged ?
           <MenuItem
             leftIcon={<IconAddCircle />}
-            onTouchTap={this.openBookAddDialog.bind(this)}
+            onTouchTap={() => this.openBookAddDialog()}
           >
             文献追加
           </MenuItem> : null}
         <Divider />
         <BookItems
           books={this.state.books}
-          transitionToBook={this.transitionToBook.bind(this)}
+          transitionToBook={bookId => this.transitionToBook(bookId)}
         />
       </MDrawer>
     );
