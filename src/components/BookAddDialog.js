@@ -1,4 +1,5 @@
 import * as React from 'react';
+import MicroContainer from 'react-micro-container';
 
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -7,7 +8,46 @@ import TextField from 'material-ui/TextField';
 import store from '../Store';
 import { UPDATE_BOOK_ADD_DIALOG_OPEN } from '../EventTypes';
 
-export default class BookAddDialog extends React.Component {
+// Dialogの中でTextFieldを使うと問題が出る
+// http://qiita.com/koizuss@github/items/ddd656cbafd888f179d6
+// https://github.com/callemall/material-ui/issues/3394
+const BookAddDialogRenderer = ({ dispatch, actions, open, title, description }) => (
+  <Dialog
+    title="文献の追加"
+    open={open}
+    actions={actions}
+    onRequestClose={() => dispatch('closeDialog')}
+    autoScrollBodyContent
+    modal
+  >
+    <TextField
+      floatingLabelText="文献タイトル（必須）"
+      defaultValue={title}
+      onChange={e => dispatch('changeTitle', e)}
+      rows={1}
+      fullWidth
+      multiLine
+    />
+    <TextField
+      floatingLabelText="説明"
+      defaultValue={description}
+      onChange={e => dispatch('changeDescription', e)}
+      rows={2}
+      fullWidth
+      multiLine
+    />
+  </Dialog>
+);
+
+BookAddDialogRenderer.propTypes = {
+  dispatch: React.PropTypes.func,
+  actions: React.PropTypes.arrayOf(React.PropTypes.element).isRequired,
+  open: React.PropTypes.bool.isRequired,
+  title: React.PropTypes.string.isRequired,
+  description: React.PropTypes.string.isRequired,
+};
+
+export default class BookAddDialog extends MicroContainer {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,14 +58,20 @@ export default class BookAddDialog extends React.Component {
   }
 
   componentDidMount() {
-    store.on(UPDATE_BOOK_ADD_DIALOG_OPEN, this.onOpenUpdated, this);
+    store.on(UPDATE_BOOK_ADD_DIALOG_OPEN, this.handleOpenUpdate, this);
+    this.subscribe({
+      changeTitle: this.handleTitleChange,
+      changeDescription: this.handleDescriptionChange,
+      closeDialog: this.closeDialog,
+      createBook: this.createBook,
+    });
   }
 
   componentWillUnmount() {
-    store.off(UPDATE_BOOK_ADD_DIALOG_OPEN, this.onOpenUpdated, this);
+    store.off(UPDATE_BOOK_ADD_DIALOG_OPEN, this.handleOpenUpdate, this);
   }
 
-  onOpenUpdated() {
+  handleOpenUpdate() {
     const open = store.isBookAddDialogOpen();
     this.setState({
       open,
@@ -34,6 +80,13 @@ export default class BookAddDialog extends React.Component {
 
   closeDialog() {
     store.setBookAddDialogOpen(false);
+  }
+
+  clearForm() {
+    this.setState({
+      title: '',
+      description: '',
+    });
   }
 
   createBook() {
@@ -45,20 +98,13 @@ export default class BookAddDialog extends React.Component {
     });
   }
 
-  clearForm() {
-    this.setState({
-      title: '',
-      description: '',
-    });
-  }
-
-  handleTitleChanged(e) {
+  handleTitleChange(e) {
     this.setState({
       title: e.target.value,
     });
   }
 
-  handleDescriptionChanged(e) {
+  handleDescriptionChange(e) {
     this.setState({
       description: e.target.value,
     });
@@ -71,51 +117,24 @@ export default class BookAddDialog extends React.Component {
     return true;
   }
 
-  // Dialogの中でTextFieldを使うと問題が出る
-  // http://qiita.com/koizuss@github/items/ddd656cbafd888f179d6
-  // https://github.com/callemall/material-ui/issues/3394
   render() {
     const allowSubmittion = this.validate();
 
     const actions = [
       <FlatButton
         label="キャンセル"
-        onTouchTap={this.closeDialog.bind(this)}
+        onTouchTap={() => this.dispatch('closeDialog')}
       />,
       <FlatButton
         label="追加"
-        onTouchTap={this.createBook.bind(this)}
+        onTouchTap={() => this.dispatch('createBook')}
         disabled={!allowSubmittion}
         primary
       />,
     ];
 
     return (
-      <Dialog
-        title="文献の追加"
-        open={this.state.open}
-        actions={actions}
-        onRequestClose={this.closeDialog.bind(this)}
-        autoScrollBodyContent
-        modal
-      >
-        <TextField
-          floatingLabelText="文献タイトル（必須）"
-          defaultValue={this.state.title || null}
-          onChange={this.handleTitleChanged.bind(this)}
-          rows={1}
-          fullWidth
-          multiLine
-        />
-        <TextField
-          floatingLabelText="説明"
-          defaultValue={this.state.description || null}
-          onChange={this.handleDescriptionChanged.bind(this)}
-          rows={2}
-          fullWidth
-          multiLine
-        />
-      </Dialog>
+      <BookAddDialogRenderer dispatch={this.dispatch} actions={actions} {...this.state} />
     );
   }
 }
