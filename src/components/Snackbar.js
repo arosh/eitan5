@@ -43,8 +43,8 @@ export default class Snackbar extends React.Component {
         message={this.state.message}
         action="Close"
         autoHideDuration={4000}
-        onActionTouchTap={this.closeSnackbar.bind(this)}
-        onRequestClose={this.closeSnackbar.bind(this)}
+        onActionTouchTap={() => this.closeSnackbar()}
+        onRequestClose={() => this.closeSnackbar()}
       />
     );
   }
