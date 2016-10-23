@@ -6,7 +6,7 @@ import IconAdd from 'material-ui/svg-icons/content/add-circle';
 import IconClear from 'material-ui/svg-icons/content/clear';
 import IconButton from 'material-ui/IconButton';
 
-import store from '../Store';
+import store from '../../Store';
 
 const RemoveButton = props => (
   <IconButton {...props}><IconClear /></IconButton>

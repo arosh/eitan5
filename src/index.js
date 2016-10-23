@@ -13,7 +13,7 @@ import AppBar from './components/AppBar';
 import BookAddDialog from './components/BookAddDialog';
 import BookPage from './components/BookPage/BookPage';
 import Drawer from './components/Drawer';
-import Home from './components/Home';
+import Home from './components/Home/Home';
 import Snackbar from './components/Snackbar';
 
 injectTapEventPlugin();

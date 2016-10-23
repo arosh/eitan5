@@ -2,11 +2,11 @@ import * as React from 'react';
 
 import BookList from './BookList';
 import WordList from './WordList';
-import Loading from './Loading';
+import Loading from '../Loading';
 
-import { UPDATE_LOGGED, UPDATE_BOOKS, UPDATE_RECENT_WORDS } from '../EventTypes';
-import firebaseService from '../FirebaseService';
-import store from '../Store';
+import { UPDATE_LOGGED, UPDATE_BOOKS, UPDATE_RECENT_WORDS } from '../../EventTypes';
+import firebaseService from '../../FirebaseService';
+import store from '../../Store';
 
 const Logged = ({ books, words }) => (
   <div>
