@@ -24,6 +24,7 @@ const WordEditor = props => (
         <RaisedButton
           onTouchTap={() => props.dispatch('copy')}
           label="選択範囲をコピー"
+          tabIndex={-1}
         />
       </div>
     </div>
