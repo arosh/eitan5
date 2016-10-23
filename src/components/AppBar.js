@@ -42,7 +42,7 @@ class Login extends React.Component {
   render() {
     return (
       <div>
-        <FlatButton {...this.props} label="ログイン" onTouchTap={() => this.openPopover()} />
+        <FlatButton {...this.props} label="ログイン" onTouchTap={e => this.openPopover(e)} />
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}

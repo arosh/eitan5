@@ -50,7 +50,7 @@ const RemoveButton = props => (
   <RaisedButton
     label="削除"
     disabled={!props.enable}
-    onTouchTap={(e) => { e.preventDefault(); props.dispatch('deleteSelectedRows'); }}
+    onTouchTap={() => props.dispatch('deleteSelectedRows')}
     secondary
   />
 );

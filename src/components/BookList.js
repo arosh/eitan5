@@ -43,7 +43,7 @@ export default class BookList extends React.Component {
         onTouchTap={() => this.handleBookClicked(book.bookId)}
         rightIconButton={
           <RemoveButton
-            onTouchTap={(e) => { e.preventDefault(); this.deleteItem(book.bookId, book.title); }}
+            onTouchTap={() => this.deleteItem(book.bookId, book.title)}
             tooltip="削除"
           />}
         insetChildren
