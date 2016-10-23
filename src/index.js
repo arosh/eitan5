@@ -11,9 +11,9 @@ import * as colors from 'material-ui/styles/colors';
 
 import AppBar from './components/AppBar';
 import BookAddDialog from './components/BookAddDialog';
-import BookPage from './components/BookPage/BookPage';
+import BookPage from './components/BookPage';
 import Drawer from './components/Drawer';
-import Home from './components/Home/Home';
+import Home from './components/Home';
 import Snackbar from './components/Snackbar';
 
 injectTapEventPlugin();

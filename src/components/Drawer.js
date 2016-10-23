@@ -16,19 +16,17 @@ import {
   UPDATE_LOGGED,
 } from '../EventTypes';
 
-class BookItems extends React.Component {
-  render() {
-    const bookItems = this.props.books.map(book =>
-      <MenuItem
-        key={book.bookId}
-        onTouchTap={() => this.props.transitionToBook(book.bookId)}
-      >
-        {truncate(book.title, 29)}
-      </MenuItem>
-    );
-    return <div>{ bookItems }</div>;
-  }
-}
+const BookItems = ({ books, transitionToBook }) => {
+  const bookItems = books.map(book =>
+    <MenuItem
+      key={book.bookId}
+      onTouchTap={() => transitionToBook(book.bookId)}
+    >
+      {truncate(book.title, 29)}
+    </MenuItem>
+  );
+  return <div>{bookItems}</div>;
+};
 
 
 BookItems.propTypes = {

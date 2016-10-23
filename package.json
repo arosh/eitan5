@@ -46,8 +46,7 @@
       "symbol-description": "off",
       "no-return-assign": "off",
       "react/jsx-filename-extension": "off",
-      "react/no-multi-comp": "off",
-      "react/prefer-stateless-function": "off"
+      "react/no-multi-comp": "off"
     }
   }
 }
