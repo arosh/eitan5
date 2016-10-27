@@ -1,5 +1,7 @@
 import EventEmitter from 'eventemitter3';
 import values from 'object.values';
+import truncate from 'truncate';
+
 import * as firebase from 'firebase';
 
 import {
@@ -120,7 +122,7 @@ class FirebaseService extends EventEmitter {
           .set({ title, description, bookId });
       })
       .then(() => {
-        store.setSnackbarMessage(`文献「${title}」を作成しました`);
+        store.setSnackbarMessage(`文献「${truncate(title, 50)}」を作成しました`);
         return bookId;
       }, (error) => {
         this.trace(error);
@@ -162,7 +164,8 @@ class FirebaseService extends EventEmitter {
           return ref.remove();
         })
         .then(() => {
-          store.setSnackbarMessage(`文献「${data.title}」を削除しました`);
+          const { title } = data;
+          store.setSnackbarMessage(`文献「${truncate(title, 50)}」を削除しました`);
         }, (error) => {
           this.trace(error);
           return error;

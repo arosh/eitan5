@@ -17,6 +17,7 @@ import {
 } from '../EventTypes';
 
 const BookItems = ({ books, transitionToBook }) => {
+  // 文字数の29には特に根拠はないが，パッと見ではちょうど良さそう
   const bookItems = books.map(book =>
     <MenuItem
       key={book.bookId}
@@ -27,7 +28,6 @@ const BookItems = ({ books, transitionToBook }) => {
   );
   return <div>{bookItems}</div>;
 };
-
 
 BookItems.propTypes = {
   books: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
