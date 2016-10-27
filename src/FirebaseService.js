@@ -122,7 +122,8 @@ class FirebaseService extends EventEmitter {
           .set({ title, description, bookId });
       })
       .then(() => {
-        store.setSnackbarMessage(`文献「${truncate(title, 50)}」を作成しました`);
+        // 50とかにするとCloseボタンが消えてしまう
+        store.setSnackbarMessage(`文献「${truncate(title, 40)}」を作成しました`);
         return bookId;
       }, (error) => {
         this.trace(error);
@@ -165,7 +166,8 @@ class FirebaseService extends EventEmitter {
         })
         .then(() => {
           const { title } = data;
-          store.setSnackbarMessage(`文献「${truncate(title, 50)}」を削除しました`);
+          // 50とかにするとCloseボタンが消えてしまう
+          store.setSnackbarMessage(`文献「${truncate(title, 40)}」を削除しました`);
         }, (error) => {
           this.trace(error);
           return error;
