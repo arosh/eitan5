@@ -5,8 +5,8 @@
   "devDependencies": {
     "@types/eventemitter3": "^1.1.29",
     "@types/firebase": "^2.4.30",
-    "@types/material-ui": "^0.15.37",
-    "@types/react": "^0.14.41",
+    "@types/material-ui": "^0.16.38",
+    "@types/react": "^0.14.43",
     "@types/react-dom": "^0.14.18",
     "eslint": "^3.8.1",
     "eslint-config-airbnb": "^12.0.0",
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "eventemitter3": "^2.0.2",
-    "firebase": "^3.5.1",
+    "firebase": "^3.5.2",
     "material-ui": "^0.16.1",
     "object.values": "^1.0.3",
     "react": "^15.3.2",
