@@ -68,34 +68,27 @@ class FirebaseService extends EventEmitter {
     return this.user !== null;
   }
 
-  signInWithGoogle() {
-    // https://firebase.google.com/docs/auth/web/google-signin
-    const provider = new firebase.auth.GoogleAuthProvider();
-    this.auth.signInWithPopup(provider)
-      .then(() => {
-        store.setSnackbarMessage('ログインしました');
-      }, (error) => {
-        this.trace(error);
-      });
+  createProvider(providerName) {
+    if (providerName === 'Google') {
+      // https://firebase.google.com/docs/auth/web/google-signin
+      return new firebase.auth.GoogleAuthProvider();
+    } else if (providerName === 'Twitter') {
+      // https://firebase.google.com/docs/auth/web/twitter-login
+      return new firebase.auth.TwitterAuthProvider();
+    }
+
+    this.trace(`Cannot find provider: ${providerName}`);
+    return null;
   }
 
-  signInWithTwitter() {
-    // https://firebase.google.com/docs/auth/web/twitter-login
-    const provider = new firebase.auth.TwitterAuthProvider();
+  login(providerName) {
+    const provider = this.createProvider(providerName);
     this.auth.signInWithPopup(provider)
     .then(() => {
       store.setSnackbarMessage('ログインしました');
     }, (error) => {
       this.trace(error);
     });
-  }
-
-  login(providerName) {
-    if (providerName === 'Google') {
-      this.signInWithGoogle();
-    } else if (providerName === 'Twitter') {
-      this.signInWithTwitter();
-    }
   }
 
   logout() {
