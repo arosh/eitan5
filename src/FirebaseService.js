@@ -200,7 +200,9 @@ class FirebaseService extends EventEmitter {
     }
 
     if (snapshot && snapshot.child('recentWords').exists()) {
-      this.emit(UPDATE_RECENT_WORDS, values(snapshot.child('recentWords').val()));
+      const recentWords = values(snapshot.child('recentWords').val());
+      recentWords.reverse();
+      this.emit(UPDATE_RECENT_WORDS, recentWords);
     } else {
       this.emit(UPDATE_RECENT_WORDS, []);
     }
