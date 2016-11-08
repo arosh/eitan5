@@ -24,7 +24,7 @@ const BookItems = ({ books, transitionToBook }) => {
       onTouchTap={() => transitionToBook(book.bookId)}
     >
       {truncate(book.title, 29)}
-    </MenuItem>
+    </MenuItem>,
   );
   return <div>{bookItems}</div>;
 };
